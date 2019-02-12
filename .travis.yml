@@ -10,8 +10,7 @@ jobs:
     - stage: documentation
       name: "Publish documentation"
       if: (branch = master)
-      # script: chmod +x .travis/javadoc-push.sh && .travis/javadoc-push.sh
-      script: echo TODO
+      script: chmod +x .travis/javadoc-push.sh && .travis/javadoc-push.sh
 
 branches:
   only:
