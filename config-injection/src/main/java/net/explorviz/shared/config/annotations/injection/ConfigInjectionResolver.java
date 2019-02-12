@@ -1,4 +1,4 @@
-package net.explorviz.shared.annotations.injection;
+package net.explorviz.shared.config.annotations.injection;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -6,8 +6,7 @@ import java.lang.reflect.Type;
 import java.util.Properties;
 import javax.inject.Singleton;
 import javax.ws.rs.InternalServerErrorException;
-import net.explorviz.shared.annotations.Config;
-import net.explorviz.shared.annotations.ConfigValues;
+import net.explorviz.shared.config.annotations.Config;
 import org.glassfish.hk2.api.Injectee;
 import org.glassfish.hk2.api.InjectionResolver;
 import org.glassfish.hk2.api.ServiceHandle;
@@ -23,16 +22,17 @@ import org.slf4j.LoggerFactory;
  * .to(new TypeLiteral<InjectionResolver<Config>>() {});}
  * </pre>
  *
- * @see net.explorviz.shared.annotations.Config
+ * @see net.explorviz.shared.config.annotations.Config
  */
 
 @Singleton
-public class ConfigValuesInjectionResolver implements InjectionResolver<ConfigValues> {
+public class ConfigInjectionResolver implements InjectionResolver<Config> {
 
-  private static final Logger LOGGER = LoggerFactory.getLogger(ConfigValuesInjectionResolver.class);
+  private static final Logger LOGGER = LoggerFactory.getLogger(ConfigInjectionResolver.class);
 
   private static final String PROPERTIES_DEFAULT_FILENAME = "explorviz.properties";
   private static final String PROPERTIES_CUSTOM_FILENAME = "explorviz-custom.properties";
+
 
   private static final Properties PROP = new Properties();
 
@@ -40,11 +40,11 @@ public class ConfigValuesInjectionResolver implements InjectionResolver<ConfigVa
       "An internal server error occured. Contact your administrator.");
 
   /**
-   * Creates a ConfigValueInjectionResolver that is used to load injectable configuration properties
-   * from the explorviz.properties file. Will be automatically created and registered in the CDI
-   * context at application startup.
+   * Creates a ConfigInjectionResolver that is used to load injectable configuration properties from
+   * the explorviz.properties file. Will be automatically created and registered in the CDI context
+   * at application startup.
    */
-  public ConfigValuesInjectionResolver() {
+  public ConfigInjectionResolver() {
 
     final ClassLoader loader = Thread.currentThread().getContextClassLoader();
 
@@ -103,15 +103,11 @@ public class ConfigValuesInjectionResolver implements InjectionResolver<ConfigVa
   }
 
   private String handlePropertyLoading(final Injectee injectee) {
-    final ConfigValues annotation = injectee.getParent().getAnnotation(ConfigValues.class);
+    final Config annotation = injectee.getParent().getAnnotation(Config.class);
 
-    final int positionInConfigArray = injectee.getPosition();
+    if (annotation != null) {
 
-    final Config annotationValue = annotation.value()[positionInConfigArray];
-
-    if (annotationValue != null) {
-
-      final String propName = annotationValue.value();
+      final String propName = annotation.value();
       return String.valueOf(PROP.get(propName));
     }
 

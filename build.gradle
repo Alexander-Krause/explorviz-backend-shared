@@ -19,7 +19,6 @@ allprojects {
 // BEGIN aggregated Javadoc in multiproject Gradle build
 def exportedProjects= [
 		':config-injection', 
-		':security', 
 		':exception-handling', 
 		':users'
 ]

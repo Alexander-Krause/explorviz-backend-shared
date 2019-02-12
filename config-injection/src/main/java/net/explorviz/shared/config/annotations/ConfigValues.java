@@ -1,4 +1,4 @@
-package net.explorviz.shared.annotations;
+package net.explorviz.shared.config.annotations;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

@@ -1,4 +1,4 @@
-package net.explorviz.shared.annotations.injection;
+package net.explorviz.shared.config.annotations.injection;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -6,8 +6,8 @@ import java.lang.reflect.Type;
 import java.util.Properties;
 import javax.inject.Singleton;
 import javax.ws.rs.InternalServerErrorException;
-import net.explorviz.shared.annotations.Config;
-import net.explorviz.shared.annotations.ConfigValues;
+import net.explorviz.shared.config.annotations.Config;
+import net.explorviz.shared.config.annotations.ConfigValues;
 import org.glassfish.hk2.api.Injectee;
 import org.glassfish.hk2.api.InjectionResolver;
 import org.glassfish.hk2.api.ServiceHandle;
@@ -23,7 +23,7 @@ import org.slf4j.LoggerFactory;
  * .to(new TypeLiteral<InjectionResolver<Config>>() {});}
  * </pre>
  *
- * @see net.explorviz.shared.annotations.Config
+ * @see net.explorviz.shared.config.annotations.Config
  */
 
 @Singleton
