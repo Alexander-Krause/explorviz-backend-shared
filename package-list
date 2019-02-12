@@ -1,0 +1,9 @@
+net.explorviz.shared.config.annotations
+net.explorviz.shared.config.annotations.injection
+net.explorviz.shared.exceptions
+net.explorviz.shared.exceptions.mapper
+net.explorviz.shared.security
+net.explorviz.shared.security.annotations
+net.explorviz.shared.security.filters
+net.explorviz.shared.security.model
+net.explorviz.shared.security.model.roles
