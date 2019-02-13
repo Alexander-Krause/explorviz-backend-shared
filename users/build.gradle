@@ -10,4 +10,6 @@ dependencies {
 	
 	// HashCode- and EqualBuilder
 	implementation group: 'org.apache.commons', name: 'commons-lang3', version: '3.8.1'
+	
+	implementation group: 'org.glassfish.jersey.containers', name: 'jersey-container-servlet', version:'2.27'
 }
