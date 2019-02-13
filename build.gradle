@@ -12,6 +12,9 @@ allprojects {
     }
     
     dependencies {
+    	// Logger
+		implementation group: 'org.slf4j', name: 'slf4j-simple', version: '1.6.1'
+		
     	testImplementation 'junit:junit:4.12'
 	}
 }
@@ -20,7 +23,8 @@ allprojects {
 def exportedProjects= [
 		':config-injection', 
 		':exception-handling', 
-		':users'
+		':users',
+		':security'
 ]
 
 task alljavadoc(type: Javadoc) {
