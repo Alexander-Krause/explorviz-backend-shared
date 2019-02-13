@@ -1,7 +1,7 @@
 dependencies {
 
 	// User subproject
-	implementation project(':users')
+	implementation project(':user')
 	
 	// JSON Web Token (JWT)
 	implementation 'io.jsonwebtoken:jjwt-api:0.10.5'

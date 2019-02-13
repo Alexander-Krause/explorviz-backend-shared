@@ -23,7 +23,7 @@ allprojects {
 def exportedProjects= [
 		':config-injection', 
 		':exception-handling', 
-		':users',
+		':user',
 		':security',
 		':discovery-common'
 ]
