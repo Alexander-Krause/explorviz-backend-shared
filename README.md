@@ -15,7 +15,7 @@ You can easily add a subproject to your service by using [Jitpack](https://jitpa
 dependencies {
   ...
 
-  implementation 'com.github.ExplorViz.explorviz-backend-shared:SUBPROJECTNAME:master-SNAPSHOT'
+  implementation 'com.github.explorviz.explorviz-backend-shared:SUBPROJECTNAME:master-SNAPSHOT'
 }
 
 ```
