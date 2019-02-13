@@ -1,6 +1,6 @@
 dependencies {
 
-	// Config subproject
+	// User subproject
 	implementation project(':users')
 	
 	// JSON Web Token (JWT)

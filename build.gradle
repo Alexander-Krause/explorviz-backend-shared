@@ -24,7 +24,8 @@ def exportedProjects= [
 		':config-injection', 
 		':exception-handling', 
 		':users',
-		':security'
+		':security',
+		':discovery-common'
 ]
 
 task alljavadoc(type: Javadoc) {
