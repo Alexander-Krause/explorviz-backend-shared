@@ -18,9 +18,9 @@ public class Event extends BaseEntity {
 
 	private long timestamp;
 
-	EEventType eventType = EEventType.UNKNOWN;
+	private EEventType eventType = EEventType.UNKNOWN;
 
-	String eventMessage;
+	private String eventMessage;
 
 	public Event(Landscape landscape, long timestamp, EEventType eventType, String eventMessage) {
 		this.parent = landscape;
