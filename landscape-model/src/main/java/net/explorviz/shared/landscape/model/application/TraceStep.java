@@ -50,6 +50,10 @@ public class TraceStep extends BaseEntity {
     this.setRequests(requests);
     this.setCurrentTraceDuration(currentTraceDuration);
   }
+  
+  public TraceStep() {
+    // Jackson
+  }
 
   public Trace getParentTrace() {
     return this.parentTrace;
