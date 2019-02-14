@@ -20,3 +20,5 @@ dependencies {
 
 ```
 
+### Local Development
+If you want to locally develop against this repository, therefore do not wait for Jitpack all the time, see the `settings.gradle` file of the `explorviz-backend` root project. 
