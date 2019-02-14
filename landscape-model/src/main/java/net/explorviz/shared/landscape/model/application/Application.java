@@ -40,6 +40,9 @@ public class Application extends BaseEntity {
   @Relationship("traces")
   private List<Trace> traces = new ArrayList<>();
 
+  public Application() {
+    // Jackson
+  }
 
   public String getName() {
     return this.name;

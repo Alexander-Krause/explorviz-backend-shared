@@ -23,6 +23,10 @@ public class Event extends BaseEntity {
 		this.eventType = eventType;
 		this.eventMessage = eventMessage;
 	}
+	
+	public Event() {
+	  // Jackson
+	}
 
 	public long getTimestamp() {
 		return timestamp;

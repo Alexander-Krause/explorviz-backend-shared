@@ -22,6 +22,10 @@ public class DatabaseQuery extends BaseEntity {
   private Application parentApplication;
 
 
+  public DatabaseQuery() {
+    // Jackson
+  }
+  
   public long getTimestamp() {
     return this.timestamp;
   }

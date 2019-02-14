@@ -24,7 +24,10 @@ public class Trace extends BaseEntity {
 
   @Relationship("traceSteps")
   private List<TraceStep> traceSteps = new ArrayList<>();
-
+  
+  public Trace() {
+    // Jackson
+  }
 
   public Trace(final String traceId) {
     this.setTraceId(traceId);

@@ -23,6 +23,9 @@ public class Clazz extends BaseEntity {
   @Relationship("clazzCommunications")
   private List<ClazzCommunication> clazzCommunications = new ArrayList<>();
 
+  public Clazz() {
+    // Jackson
+  }
 
   public String getName() {
     return this.name;

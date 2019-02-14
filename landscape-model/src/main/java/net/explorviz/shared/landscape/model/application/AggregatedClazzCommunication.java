@@ -28,6 +28,10 @@ public class AggregatedClazzCommunication extends BaseEntity {
   private float averageResponseTime;
 
 
+  public AggregatedClazzCommunication() {
+    // Jackson
+  }
+  
   public int getTotalRequests() {
     return this.totalRequests;
   }

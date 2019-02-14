@@ -27,6 +27,9 @@ public class Node extends BaseEntity {
   @Relationship("parent")
   private NodeGroup parent;
 
+  public Node() {
+    // Jackson
+  }
 
   public String getName() {
     return this.name;

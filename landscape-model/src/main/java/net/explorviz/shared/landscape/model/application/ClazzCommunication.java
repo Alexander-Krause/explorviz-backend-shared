@@ -36,6 +36,10 @@ public class ClazzCommunication extends BaseEntity {
   private float averageResponseTime = 0;
 
 
+  public ClazzCommunication() {
+    // Jackson
+  }
+  
   public String getOperationName() {
     return this.operationName;
   }

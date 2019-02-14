@@ -24,6 +24,10 @@ public class NodeGroup extends BaseEntity {
   private System parent;
 
 
+  public NodeGroup() {
+    // Jackson
+  }
+  
   public String getName() {
     return this.name;
   }

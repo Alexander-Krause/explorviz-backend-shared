@@ -22,6 +22,9 @@ public class System extends BaseEntity {
   @Relationship("parent")
   private Landscape parent;
 
+  public System() {
+    // Jackson
+  }
 
   public String getName() {
     return this.name;

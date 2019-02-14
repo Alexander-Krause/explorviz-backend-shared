@@ -34,6 +34,9 @@ public class Component extends BaseEntity {
   @JsonIgnore
   private Application parentApplication;
 
+  public Component() {
+    // Jackson
+  }
 
   public String getName() {
     return this.name;
