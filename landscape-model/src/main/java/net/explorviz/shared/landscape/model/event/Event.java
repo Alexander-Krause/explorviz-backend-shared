@@ -1,6 +1,5 @@
 package net.explorviz.shared.landscape.model.event;
 
-import com.github.jasminb.jsonapi.annotations.Relationship;
 import com.github.jasminb.jsonapi.annotations.Type;
 
 import net.explorviz.shared.landscape.model.helper.BaseEntity;
@@ -13,28 +12,16 @@ import net.explorviz.shared.landscape.model.landscape.Landscape;
 @Type("event")
 public class Event extends BaseEntity {
 
-	@Relationship("parent")
-	private Landscape parent;
-
 	private long timestamp;
 
 	private EEventType eventType = EEventType.UNKNOWN;
 
 	private String eventMessage;
 
-	public Event(Landscape landscape, long timestamp, EEventType eventType, String eventMessage) {
-		this.parent = landscape;
+	public Event(long timestamp, EEventType eventType, String eventMessage) {
 		this.timestamp = timestamp;
 		this.eventType = eventType;
 		this.eventMessage = eventMessage;
-	}
-
-	public Landscape getParent() {
-		return parent;
-	}
-
-	public void setParent(Landscape parent) {
-		this.parent = parent;
 	}
 
 	public long getTimestamp() {
