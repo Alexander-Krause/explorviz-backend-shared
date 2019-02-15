@@ -22,20 +22,23 @@ public class DefaultSettings {
    * Initializes the default settings.
    */
   private static void initDefaultValues() {
-    booleanSettings.put("showFpsCounter",
-        new BooleanSettingDescriptor("showFpsCounter", "Show FPS Counter", "", false));
+    booleanSettings.put("showFpsCounter", new BooleanSettingDescriptor("showFpsCounter",
+        "Show FPS Counter", "\'Frames Per Second\' metrics in visualizations", false));
     booleanSettings.put("appVizTransparency",
-        new BooleanSettingDescriptor("appVizTransparency", "App Viz Transparency", "", true));
-    booleanSettings.put("enableHoverEffects",
-        new BooleanSettingDescriptor("enableHoverEffects", "Enable Hover Effects", "", true));
-    booleanSettings.put("keepHighlightingOnOpenOrClose", new BooleanSettingDescriptor(
-        "keepHighlightingOnOpenOrClose", "Keep Highlighting On Open Or Close", "", true));
-
+        new BooleanSettingDescriptor("appVizTransparency", "App Viz Transparency",
+            "Transparency effect for selection (left click) in application visualization", true));
+    booleanSettings.put("enableHoverEffects", new BooleanSettingDescriptor("enableHoverEffects",
+        "Enable Hover Effects", "Hover effect (flashing entities) for mouse cursor", true));
+    booleanSettings.put("keepHighlightingOnOpenOrClose",
+        new BooleanSettingDescriptor("keepHighlightingOnOpenOrClose",
+            "Keep Highlighting On Open Or Close",
+            "Transparency effect for selection (left click) in application visualization", true));
     numericSettings.put("appVizCommArrowSize",
-        new NumericSettingDescriptor("appVizCommArrowSize", "AppViz Arrow Size", "", 1.0));
+        new NumericSettingDescriptor("appVizCommArrowSize", "AppViz Arrow Size",
+            "Arrow Size for selected communications in application visualization", 1.0));
     numericSettings.put("appVizTransparencyIntensity",
         new NumericSettingDescriptor("appVizTransparencyIntensity", "AppViz Transparency Intensity",
-            "Intesity of the transparency effect", 0.1, 0.5, 0.1));
+            "Transparency effect intensity (\'App Viz Transparency\' must be enabled)", 0.1, 0.5, 0.1));
 
   }
 
