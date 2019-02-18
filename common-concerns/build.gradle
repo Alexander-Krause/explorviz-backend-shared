@@ -1,0 +1,9 @@
+dependencies {
+	// JSON-API parsing
+  	implementation group: 'com.github.jasminb', name: 'jsonapi-converter', version:'0.8'
+  	
+  	implementation group: 'org.glassfish.jersey.containers', name: 'jersey-container-servlet', version:'2.27'
+  		
+	// HK2 DI
+	implementation group: 'org.glassfish.jersey.inject', name: 'jersey-hk2', version:'2.27'
+}
