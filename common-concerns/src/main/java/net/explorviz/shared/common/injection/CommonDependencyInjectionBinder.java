@@ -2,6 +2,7 @@ package net.explorviz.shared.common.injection;
 
 import com.github.jasminb.jsonapi.ResourceConverter;
 import javax.inject.Singleton;
+import net.explorviz.shared.common.idgen.IdGenerator;
 import net.explorviz.shared.common.jsonapi.ResourceConverterFactory;
 import net.explorviz.shared.config.annotations.Config;
 import net.explorviz.shared.config.annotations.ConfigValues;
@@ -37,5 +38,8 @@ public class CommonDependencyInjectionBinder extends AbstractBinder {
 
     // ErrorObject Handler
     this.bind(ErrorObjectHelper.class).to(ErrorObjectHelper.class).in(Singleton.class);
+
+    // Id Generator
+    this.bind(IdGenerator.class).to(IdGenerator.class).in(Singleton.class);
   }
 }
