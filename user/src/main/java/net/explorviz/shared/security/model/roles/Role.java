@@ -14,32 +14,24 @@ import xyz.morphia.annotations.Indexed;
 public class Role {
 
   @Id
-  @com.github.jasminb.jsonapi.annotations.Id(LongIdHandler.class)
-  private Long id;
-
-  @Indexed(options = @IndexOptions(unique = true))
+  @com.github.jasminb.jsonapi.annotations.Id
   private String descriptor;
 
   public Role() {
     // For MongoDB
   }
 
-  public Role(final Long id, final String descriptor) {
-    this.id = id;
+  public Role( final String descriptor) {
     this.descriptor = descriptor;
   }
 
-  public Long getId() {
-    return this.id;
-  }
+  
 
   public String getDescriptor() {
     return this.descriptor;
   }
 
-  public void setId(final Long id) {
-    this.id = id;
-  }
+
 
   public void setDescriptor(final String descriptor) {
     this.descriptor = descriptor;
@@ -59,18 +51,17 @@ public class Role {
 
     final Role other = (Role) obj;
 
-    return new EqualsBuilder().append(this.id, other.getId())
-        .append(this.descriptor, other.getDescriptor()).build();
+    return new EqualsBuilder().append(this.descriptor, other.getDescriptor()).build();
   }
 
   @Override
   public int hashCode() {
-    return new HashCodeBuilder().append(this.id).append(this.descriptor).build();
+    return new HashCodeBuilder().append(this.descriptor).build();
   }
 
   @Override
   public String toString() {
-    return "{" + this.id + ", " + this.descriptor + "}";
+    return "{" + this.descriptor + "}";
   }
 
 
