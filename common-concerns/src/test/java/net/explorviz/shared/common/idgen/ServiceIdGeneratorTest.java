@@ -11,28 +11,21 @@ import java.util.concurrent.Future;
 import org.junit.Before;
 import org.junit.Test;
 
-public class IdGeneratorTest {
+public class ServiceIdGeneratorTest {
 
 
-  IdGenerator idGenerator;
+  ServiceIdGenerator idGenerator;
 
   @Before
   public void setUp() throws Exception {
-    idGenerator = new IdGenerator("localhost");
+    idGenerator = new ServiceIdGenerator("localhost");
   }
 
-  @Test
-  public void getUniqueIdAsLong() {
-    long id = idGenerator.getUniqueIdAsLong();
-    long nextId = idGenerator.getUniqueIdAsLong();
 
-    assertEquals(nextId, id + 1);
-
-  }
 
   @Test
-  public void getUniqueIdAsString() {
-    String id = idGenerator.getUniqueIdAsString();
+  public void getServiceId() {
+    String id = idGenerator.getServiceId();
 
     // No exception should be thrown
     Long.parseLong(id);
@@ -45,28 +38,27 @@ public class IdGeneratorTest {
 
     ExecutorService s = Executors.newWorkStealingPool();
 
-    List<Callable<Long>> threads = new ArrayList<>();
+    List<Callable<String>> threads = new ArrayList<>();
 
     int threadCount = 100;
 
     for (int i = 0; i < threadCount; i++) {
-      threads.add(new Callable<Long>() {
+      threads.add(new Callable<String>() {
         @Override
-        public Long call() throws Exception {
-          return idGenerator.getUniqueIdAsLong();
+        public String call() throws Exception {
+          return idGenerator.getServiceId();
         }
       });
     }
 
-    List<Future<Long>> futures = s.invokeAll(threads);
+    List<Future<String>> futures = s.invokeAll(threads);
 
-    List<Long> results = new ArrayList<Long>();
+    List<String> results = new ArrayList<String>();
 
     for (Future f : futures) {
-      results.add((Long) f.get());
+      results.add((String) f.get());
     }
 
-    System.out.println(results.get(0));
     int distinctElements = (int) results.stream().distinct().count();
 
     assertEquals(threadCount, distinctElements);
