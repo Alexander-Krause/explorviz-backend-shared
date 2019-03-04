@@ -1,13 +1,10 @@
 package net.explorviz.shared.security.model.roles;
 
-import com.github.jasminb.jsonapi.LongIdHandler;
 import com.github.jasminb.jsonapi.annotations.Type;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import xyz.morphia.annotations.Entity;
 import xyz.morphia.annotations.Id;
-import xyz.morphia.annotations.IndexOptions;
-import xyz.morphia.annotations.Indexed;
 
 @Type("role")
 @Entity("roles")
