@@ -1,7 +1,13 @@
 package net.explorviz.shared.common.idgen;
 
 import javax.inject.Inject;
+import net.explorviz.shared.config.annotations.Config;
+import net.explorviz.shared.config.annotations.ConfigValues;
+import org.glassfish.hk2.api.PerLookup;
+import org.jvnet.hk2.annotations.Service;
 
+@Service
+@PerLookup
 public class IdGenerator {
 
 
