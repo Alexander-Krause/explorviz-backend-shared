@@ -13,8 +13,9 @@ import redis.clients.jedis.exceptions.JedisConnectionException;
 
 
 /**
- * 
+ * Creates unique identifiers for services.
  *
+ * @see IdGenerator
  */
 @Service
 @Singleton
@@ -60,7 +61,12 @@ public class ServiceIdGenerator {
   }
 
 
-  public String getServiceId() {
+  /**
+   * Creates an identifier for a new service.
+   * 
+   * @return the identifier.
+   */
+  public String getId() {
     try (Jedis conn = jedisPool.getResource()) {
       return Long.toString(conn.incr(IDKEY));
     }

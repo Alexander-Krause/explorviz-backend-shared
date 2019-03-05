@@ -25,7 +25,7 @@ public class ServiceIdGeneratorTest {
 
   @Test
   public void getServiceId() {
-    String id = idGenerator.getServiceId();
+    String id = idGenerator.getId();
 
     // No exception should be thrown
     Long.parseLong(id);
@@ -46,7 +46,7 @@ public class ServiceIdGeneratorTest {
       threads.add(new Callable<String>() {
         @Override
         public String call() throws Exception {
-          return idGenerator.getServiceId();
+          return idGenerator.getId();
         }
       });
     }
