@@ -11,17 +11,19 @@ public class IdGenerator {
   @Inject
   private EntityIdGenerator entityIdGenerator;
 
-
   private String serviceId;
 
   private String prefix;
 
+  @ConfigValues(@Config("service.prefix"))
   public IdGenerator(String servicePrefix) {
     this.prefix = servicePrefix;
-    this.serviceId = serviceIdGenerator.getServiceId();
   }
 
   public String generateId() {
+    if (serviceId == null || "".equals(serviceId)) {
+      this.serviceId = serviceIdGenerator.getServiceId();
+    }
     String entityId = entityIdGenerator.getId();
 
     return prefix + serviceId + "-" + entityId;
