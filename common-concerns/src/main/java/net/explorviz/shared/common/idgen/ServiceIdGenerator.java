@@ -11,6 +11,11 @@ import redis.clients.jedis.JedisPool;
 import redis.clients.jedis.JedisPoolConfig;
 import redis.clients.jedis.exceptions.JedisConnectionException;
 
+
+/**
+ * 
+ *
+ */
 @Service
 @Singleton
 public class ServiceIdGenerator {
