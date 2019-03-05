@@ -1,76 +1,44 @@
 package net.explorviz.shared.common.idgen;
 
-import static org.junit.Assert.assertEquals;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.concurrent.Callable;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
+import static org.junit.Assert.assertFalse;
+import javax.inject.Inject;
+import net.explorviz.shared.common.injection.CommonDependencyInjectionBinder;
+import org.glassfish.hk2.api.ServiceLocator;
+import org.glassfish.hk2.utilities.ServiceLocatorUtilities;
+import org.glassfish.hk2.utilities.binding.AbstractBinder;
 import org.junit.Before;
 import org.junit.Test;
 
+/**
+ * Tests the {@link IdGenerator}.
+ */
 public class IdGeneratorTest {
 
 
-  IdGenerator idGenerator;
+  @Inject
+  private IdGenerator idGen1;
 
+  @Inject
+  private IdGenerator idGen2;
+
+  /**
+   * Inject dependencies.
+   */
   @Before
-  public void setUp() throws Exception {
-    idGenerator = new IdGenerator("localhost");
+  public void setUp() {
+    final AbstractBinder binder = new CommonDependencyInjectionBinder();
+    final ServiceLocator locator = ServiceLocatorUtilities.bind(binder);
+    locator.inject(this);
   }
 
+
+  /**
+   * Check if each injected instance is freshly created and not a singleton.
+   */
   @Test
-  public void getUniqueIdAsLong() {
-    long id = idGenerator.getUniqueIdAsLong();
-    long nextId = idGenerator.getUniqueIdAsLong();
-
-    assertEquals(nextId, id + 1);
-
+  public void testPerLookup() {
+    assertFalse("Per lookup injection failed", idGen1.equals(idGen2));
   }
 
-  @Test
-  public void getUniqueIdAsString() {
-    String id = idGenerator.getUniqueIdAsString();
-
-    // No exception should be thrown
-    Long.parseLong(id);
-
-  }
-
-
-  @Test
-  public void uniqueIdThreaded() throws InterruptedException, ExecutionException {
-
-    ExecutorService s = Executors.newWorkStealingPool();
-
-    List<Callable<Long>> threads = new ArrayList<>();
-
-    int threadCount = 100;
-
-    for (int i = 0; i < threadCount; i++) {
-      threads.add(new Callable<Long>() {
-        @Override
-        public Long call() throws Exception {
-          return idGenerator.getUniqueIdAsLong();
-        }
-      });
-    }
-
-    List<Future<Long>> futures = s.invokeAll(threads);
-
-    List<Long> results = new ArrayList<Long>();
-
-    for (Future f : futures) {
-      results.add((Long) f.get());
-    }
-
-    System.out.println(results.get(0));
-    int distinctElements = (int) results.stream().distinct().count();
-
-    assertEquals(threadCount, distinctElements);
-
-  }
 
 }
