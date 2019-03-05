@@ -14,7 +14,7 @@ import org.jvnet.hk2.annotations.Service;
 @PerLookup
 public class EntityIdGenerator {
 
-  private AtomicLong counter;
+  private final AtomicLong counter;
 
   public EntityIdGenerator() {
     counter = new AtomicLong(0);

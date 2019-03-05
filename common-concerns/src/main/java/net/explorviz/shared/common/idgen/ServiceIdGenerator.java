@@ -13,7 +13,7 @@ import redis.clients.jedis.exceptions.JedisConnectionException;
 
 
 /**
- * Creates unique identifiers for services.
+ * Creates unique identifiers for services, backed by redis.
  *
  * @see IdGenerator
  */
@@ -26,17 +26,22 @@ public class ServiceIdGenerator {
   private static final String IDKEY = "id";
 
 
-  private JedisPool jedisPool;
+  private final JedisPool jedisPool;
 
 
-
+  /**
+   * Creates a new ServiceIdGenerator. Instantiation should be performed by dependency injections
+   * framework
+   * 
+   * @param host the redis host.
+   */
   @ConfigValues(@Config("redis.host"))
-  public ServiceIdGenerator(String host) {
+  public ServiceIdGenerator(final String host) {
 
     jedisPool = new JedisPool(new JedisPoolConfig(), host);
 
     try (Jedis conn = jedisPool.getResource()) {
-      String value = conn.get(IDKEY);
+      final String value = conn.get(IDKEY);
       if (value == null) {
         conn.set(IDKEY, "0");
         if (LOGGER.isWarnEnabled()) {

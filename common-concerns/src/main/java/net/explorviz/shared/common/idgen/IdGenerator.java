@@ -7,7 +7,6 @@ import org.glassfish.hk2.api.PerLookup;
 import org.jvnet.hk2.annotations.Service;
 
 /**
- * 
  * Helper class to generate system-wide unique identifiers for entities. Each identifier consists of
  * <ol>
  * <li>The prefix of the service</li>
@@ -29,10 +28,10 @@ public class IdGenerator {
 
   private String serviceId;
 
-  private String prefix;
+  private final String prefix;
 
   @ConfigValues(@Config("service.prefix"))
-  public IdGenerator(String servicePrefix) {
+  public IdGenerator(final String servicePrefix) {
     this.prefix = servicePrefix;
   }
 
@@ -42,10 +41,11 @@ public class IdGenerator {
    * @return the newly generated identifier.
    */
   public String generateId() {
-    if (serviceId == null || "".equals(serviceId)) {
+    if (serviceId == null || serviceId.isEmpty()) {
       this.serviceId = serviceIdGenerator.getId();
     }
-    String entityId = entityIdGenerator.getId();
+
+    final String entityId = entityIdGenerator.getId();
 
     return prefix + serviceId + "-" + entityId;
   }

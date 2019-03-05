@@ -9,6 +9,9 @@ import org.glassfish.hk2.utilities.binding.AbstractBinder;
 import org.junit.Before;
 import org.junit.Test;
 
+/**
+ * Tests the {@link IdGenerator}.
+ */
 public class IdGeneratorTest {
 
 
@@ -18,17 +21,23 @@ public class IdGeneratorTest {
   @Inject
   private IdGenerator idGen2;
 
+  /**
+   * Inject dependencies.
+   */
   @Before
   public void setUp() {
-    AbstractBinder binder = new CommonDependencyInjectionBinder();
-    ServiceLocator locator = ServiceLocatorUtilities.bind(binder);
+    final AbstractBinder binder = new CommonDependencyInjectionBinder();
+    final ServiceLocator locator = ServiceLocatorUtilities.bind(binder);
     locator.inject(this);
   }
 
 
+  /**
+   * Check if each injected instance is freshly created and not a singleton.
+   */
   @Test
   public void testPerLookup() {
-    assertFalse(idGen1.equals(idGen2));
+    assertFalse("Per lookup injection failed", idGen1.equals(idGen2));
   }
 
 
