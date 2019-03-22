@@ -21,7 +21,7 @@ import org.slf4j.LoggerFactory;
 @PerLookup
 public class IdGenerator {
 
-  private static final Logger LOGGER = LoggerFactory.getLogger(IdGenerator.class.getSimpleName());
+  private static final Logger LOGGER = LoggerFactory.getLogger(IdGenerator.class);
 
   @Inject
   private ServiceIdGenerator serviceIdGenerator;
@@ -72,9 +72,9 @@ public class IdGenerator {
       this.serviceId = serviceIdGenerator.getId();
     }
     final String entityId = entityIdGenerator.getId();
-    final String id = prefix + serviceId + "-" + entityId;
+    final String id = prefix + "-" + serviceId + "-" + entityId;
     if (LOGGER.isInfoEnabled()) {
-      LOGGER.info("".format("Generated id %s", id));
+      LOGGER.info("Generated id {}", id);
     }
     return id;
   }
