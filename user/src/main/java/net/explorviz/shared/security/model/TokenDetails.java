@@ -13,7 +13,7 @@ public final class TokenDetails {
   private final String id;
   private final String username;
   private final List<Role> roles;
-  private final Long userid;
+  private final String userid;
   private final ZonedDateTime issuedDate;
   private final ZonedDateTime expirationDate;
   private final int refreshCount;
@@ -21,7 +21,7 @@ public final class TokenDetails {
 
   private TokenDetails(final String id, final String username, final List<Role> roles,
       final ZonedDateTime issuedDate, final ZonedDateTime expirationDate, final int refreshCount,
-      final int refreshLimit, final Long userid) {
+      final int refreshLimit, final String userid) {
     this.id = id;
     this.username = username;
     this.roles = roles;
@@ -61,7 +61,7 @@ public final class TokenDetails {
   }
 
 
-  public long getUserId() {
+  public String getUserId() {
     return this.userid;
   }
 
@@ -80,7 +80,7 @@ public final class TokenDetails {
   public static class Builder {
 
     private String id;
-    private Long userid;
+    private String userid;
     private String username;
     private List<Role> roles;
     private ZonedDateTime issuedDate;
@@ -123,7 +123,7 @@ public final class TokenDetails {
       return this;
     }
 
-    public Builder withUserId(final Long userid) {
+    public Builder withUserId(final String userid) {
       this.userid = userid;
       return this;
     }

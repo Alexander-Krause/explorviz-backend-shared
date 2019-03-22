@@ -8,6 +8,11 @@ import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicLong;
+import javax.inject.Inject;
+import net.explorviz.shared.common.idgen.EntityIdGenerator;
+import net.explorviz.shared.common.idgen.IdGenerator;
+import net.explorviz.shared.common.idgen.ServiceIdGenerator;
+import org.glassfish.hk2.utilities.ServiceLocatorUtilities;
 
 /**
  * Base Model for all other data model entities.
@@ -17,9 +22,15 @@ import java.util.concurrent.atomic.AtomicLong;
 public class BaseEntity implements Serializable {
 
   private static final AtomicLong ID_GENERATOR = new AtomicLong();
+  
+  private static IdGenerator _ID_GENERATOR;
+  
+  public static void initialize(IdGenerator idGenerator) {
+    _ID_GENERATOR = idGenerator;
+  }
 
-  @Id(LongIdHandler.class)
-  private Long id;
+  @Id
+  private String id;
 
   /*
    * This attribute can be used by extensions to insert custom properties to any meta-model object.
@@ -28,26 +39,28 @@ public class BaseEntity implements Serializable {
    */
   private final Map<String, Object> extensionAttributes = new HashMap<>();
 
-
-  public BaseEntity() {
-    this.id = Long.valueOf(BaseEntity.ID_GENERATOR.incrementAndGet());
+  
+  public BaseEntity() { 
+    
+    if (_ID_GENERATOR == null) {
+      throw new IllegalStateException("No id generator set. Call BaseEntity.initialize() first");
+    }
+    
+    this.id = _ID_GENERATOR.generateId();
+    
   }
 
-  public Long getId() {
+  public String getId() {
     return this.id;
   }
-
-  public void initializeId() {
-    // this.id = Long.valueOf(BaseEntity.ID_GENERATOR.incrementAndGet());
-  }
+  
+ 
 
   public void updateId() {
-    this.id = Long.valueOf(BaseEntity.ID_GENERATOR.incrementAndGet());
+    this.id = _ID_GENERATOR.generateId();
   }
 
-  public void setId(final Long id) {
-    this.id = id;
-  }
+ 
 
   public Map<String, Object> getExtensionAttributes() {
     return this.extensionAttributes;

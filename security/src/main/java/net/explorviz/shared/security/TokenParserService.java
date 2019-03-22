@@ -102,8 +102,8 @@ public class TokenParserService {
   }
 
 
-  private Long extractUserId(@NotNull final Claims claims) {
-    return claims.get("userid", Long.class);
+  private String extractUserId(@NotNull final Claims claims) {
+    return claims.get("userid", String.class);
   }
 
   /**
