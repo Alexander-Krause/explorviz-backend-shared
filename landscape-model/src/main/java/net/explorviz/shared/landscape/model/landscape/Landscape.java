@@ -11,7 +11,7 @@ import net.explorviz.shared.landscape.model.application.ApplicationCommunication
 import net.explorviz.shared.landscape.model.event.Event;
 import net.explorviz.shared.landscape.model.helper.BaseEntity;
 import net.explorviz.shared.landscape.model.store.Timestamp;
-
+ 
 /**
  * Model representing a software landscape.
  */

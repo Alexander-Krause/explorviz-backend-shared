@@ -72,7 +72,7 @@ public class IdGenerator {
       this.serviceId = serviceIdGenerator.getId();
     }
     final String entityId = entityIdGenerator.getId();
-    String id = prefix + serviceId + "-" + entityId;
+    final String id = prefix + serviceId + "-" + entityId;
     if (LOGGER.isInfoEnabled()) {
       LOGGER.info("".format("Generated id %s", id));
     }
