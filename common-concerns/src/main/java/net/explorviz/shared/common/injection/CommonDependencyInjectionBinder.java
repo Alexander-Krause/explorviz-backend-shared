@@ -5,8 +5,8 @@ import javax.inject.Singleton;
 import net.explorviz.shared.common.idgen.AtomicEntityIdGenerator;
 import net.explorviz.shared.common.idgen.EntityIdGenerator;
 import net.explorviz.shared.common.idgen.IdGenerator;
-import net.explorviz.shared.common.idgen.RedisServiceIdGenerator;
 import net.explorviz.shared.common.idgen.ServiceIdGenerator;
+import net.explorviz.shared.common.idgen.UuidServiceIdGenerator;
 import net.explorviz.shared.common.jsonapi.ResourceConverterFactory;
 import net.explorviz.shared.config.annotations.Config;
 import net.explorviz.shared.config.annotations.ConfigValues;
@@ -45,7 +45,7 @@ public class CommonDependencyInjectionBinder extends AbstractBinder {
     this.bind(ErrorObjectHelper.class).to(ErrorObjectHelper.class).in(Singleton.class);
 
     // Id Generator
-    this.bind(RedisServiceIdGenerator.class).to(ServiceIdGenerator.class).in(Singleton.class);
+    this.bind(UuidServiceIdGenerator.class).to(ServiceIdGenerator.class).in(Singleton.class);
     this.bind(AtomicEntityIdGenerator.class).to(EntityIdGenerator.class).in(PerLookup.class);
     this.bind(IdGenerator.class).to(IdGenerator.class).in(PerLookup.class);
   }
