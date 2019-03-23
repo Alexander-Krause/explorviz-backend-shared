@@ -1,28 +1,23 @@
 package net.explorviz.shared.common.idgen;
 
-import java.util.concurrent.atomic.AtomicLong;
 import org.glassfish.hk2.api.PerLookup;
 import org.jvnet.hk2.annotations.Service;
 
 /**
- * Creates unique ids per entity. These ids are <b>not</b> unique across the system and should only
- * be used in association with {@link ServiceIdGenerator}.
- * 
- * @see IdGenerator
+ * Interface for entity id generators, used inside of services.
+ *
+ * @see AtomicEntityIdGenerator
  */
 @Service
 @PerLookup
-public class EntityIdGenerator {
-
-  private final AtomicLong counter;
-
-  public EntityIdGenerator() {
-    counter = new AtomicLong(0);
-  }
+public interface EntityIdGenerator {
 
 
-  public String getId() {
-    return Long.toString(counter.incrementAndGet());
-  }
+  /**
+   * Creates an identifier for a new entity.
+   * 
+   * @return the identifier.
+   */
+  public String getId();
 
 }

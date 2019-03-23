@@ -13,19 +13,19 @@ import org.junit.Before;
 import org.junit.Test;
 
 /**
- * Tests the {@link ServiceIdGenerator}.
+ * Tests the {@link RedisServiceIdGenerator}.
  *
  */
-public class ServiceIdGeneratorTest {
+public class RedisServiceIdGeneratorTest {
 
   private static final int THREADS = 100;
 
-  private ServiceIdGenerator idGenerator;
+  private RedisServiceIdGenerator idGenerator;
 
 
   @Before
   public void setUp() throws Exception {
-    idGenerator = new ServiceIdGenerator("localhost");
+    idGenerator = new RedisServiceIdGenerator("localhost");
   }
 
 
@@ -63,8 +63,8 @@ public class ServiceIdGeneratorTest {
 
     final List<String> results = new ArrayList<String>();
 
-    for (final Future f : futures) {
-      results.add((String) f.get());
+    for (final Future<String> f : futures) {
+      results.add(f.get());
     }
 
     final int distinctElements = (int) results.stream().distinct().count();

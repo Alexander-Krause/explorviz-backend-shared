@@ -5,9 +5,9 @@ import static org.junit.Assert.assertTrue;
 import org.junit.Test;
 
 /**
- * Tests for {@link EntityIdGenerator}.
+ * Tests for {@link AtomicEntityIdGenerator}.
  */
-public class EntityIdGeneratorTest {
+public class AtomicEntityIdGeneratorTest {
 
 
   /**
@@ -15,7 +15,7 @@ public class EntityIdGeneratorTest {
    */
   @Test
   public void testNonZero() {
-    final EntityIdGenerator idGenerator = new EntityIdGenerator();
+    final AtomicEntityIdGenerator idGenerator = new AtomicEntityIdGenerator();
     assertTrue("Id is 0 or less then 0.", Long.parseLong(idGenerator.getId()) > 0);
   }
 
@@ -25,7 +25,7 @@ public class EntityIdGeneratorTest {
    */
   @Test
   public void testIncrement() {
-    final EntityIdGenerator idGenerator = new EntityIdGenerator();
+    final AtomicEntityIdGenerator idGenerator = new AtomicEntityIdGenerator();
     final long id = Long.parseLong(idGenerator.getId());
     final long next = Long.parseLong(idGenerator.getId());
 
