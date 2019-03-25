@@ -32,12 +32,12 @@ public class DefaultSettings {
     booleanSettings.put("keepHighlightingOnOpenOrClose",
         new BooleanSettingDescriptor("keepHighlightingOnOpenOrClose",
             "Keep Highlighting On Open Or Close",
-            "Transparency effect for selection (left click) in application visualization", true));
+            "Toggle if highlighting should be resetted on double click in application visualization", true));
     numericSettings.put("appVizCommArrowSize",
-        new NumericSettingDescriptor("appVizCommArrowSize", "AppViz Arrow Size",
+        new NumericSettingDescriptor("appVizCommArrowSize", "Arrow Size in Application Visualization",
             "Arrow Size for selected communications in application visualization", 1.0));
     numericSettings.put("appVizTransparencyIntensity",
-        new NumericSettingDescriptor("appVizTransparencyIntensity", "AppViz Transparency Intensity",
+        new NumericSettingDescriptor("appVizTransparencyIntensity", "Transparency Intensity in Application Visualization",
             "Transparency effect intensity (\'App Viz Transparency\' must be enabled)", 0.1, 0.5, 0.1));
 
   }
