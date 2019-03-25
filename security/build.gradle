@@ -3,6 +3,8 @@ dependencies {
 	// User subproject
 	implementation project(':user')
 	
+	implementation project(':config-injection')
+	
 	// JSON Web Token (JWT)
 	api 'io.jsonwebtoken:jjwt-api:0.10.5'
 	api 'io.jsonwebtoken:jjwt-impl:0.10.5', 'io.jsonwebtoken:jjwt-jackson:0.10.5'
