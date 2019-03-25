@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.Type;
 import java.util.Properties;
+import java.util.concurrent.atomic.AtomicBoolean;
 import javax.inject.Singleton;
 import javax.ws.rs.InternalServerErrorException;
 import net.explorviz.shared.config.annotations.Config;
@@ -33,11 +34,17 @@ public class ConfigValuesInjectionResolver implements InjectionResolver<ConfigVa
 
   private static final String PROPERTIES_DEFAULT_FILENAME = "explorviz.properties";
   private static final String PROPERTIES_CUSTOM_FILENAME = "explorviz-custom.properties";
+  private static final String PROPERTIES_TEST_FILENAME = "explorviz-test.properties";
+
 
   private static final Properties PROP = new Properties();
 
+  private static Properties passedProperties = null;
+
   private final InternalServerErrorException exception = new InternalServerErrorException(
       "An internal server error occured. Contact your administrator.");
+
+  private AtomicBoolean wasUpdatedViaPassedProperties = new AtomicBoolean(false);
 
   /**
    * Creates a ConfigValueInjectionResolver that is used to load injectable configuration properties
@@ -48,32 +55,54 @@ public class ConfigValuesInjectionResolver implements InjectionResolver<ConfigVa
 
     final ClassLoader loader = Thread.currentThread().getContextClassLoader();
 
-    InputStream input = loader.getResourceAsStream(PROPERTIES_CUSTOM_FILENAME);
+    if (passedProperties == null) {
 
-    if (input == null) {
-      // use default properties
-      input = loader.getResourceAsStream(PROPERTIES_DEFAULT_FILENAME);
+      InputStream input = loader.getResourceAsStream(PROPERTIES_TEST_FILENAME);
 
       if (input == null) {
-        LOGGER.error("Couldn't load default property file.");
+        // no testing environment, use custom or default file
+
+        input = loader.getResourceAsStream(PROPERTIES_CUSTOM_FILENAME);
+
+        if (input == null) {
+          // use default properties
+          input = loader.getResourceAsStream(PROPERTIES_DEFAULT_FILENAME);
+
+          if (input == null) {
+            LOGGER.error("Couldn't load default property file.");
+            throw this.exception;
+          }
+
+          LOGGER.info("Using default property file.");
+        } else {
+          LOGGER.info("Using custom property file.");
+        }
+      } else {
+        LOGGER.info("Using test property file.");
+      }
+
+      try {
+        PROP.load(input);
+      } catch (final IOException e) {
+        LOGGER.error("Couldn't load property file.");
         throw this.exception;
       }
 
-      LOGGER.info("Using default property file.");
     } else {
-      LOGGER.info("Using custom property file.");
-    }
-
-    try {
-      PROP.load(input);
-    } catch (final IOException e) {
-      LOGGER.error("Couldn't load property file.");
-      throw this.exception;
+      LOGGER.info("Using passed properties.");
+      // use passed properties (e.g. for testing)
+      PROP.putAll(passedProperties);
     }
   }
 
   @Override
   public Object resolve(final Injectee injectee, final ServiceHandle<?> root) {
+
+    if (!wasUpdatedViaPassedProperties.get() && passedProperties != null) {
+      PROP.putAll(passedProperties);
+      wasUpdatedViaPassedProperties.set(true);
+      LOGGER.info("Updated config injection due to passed properties.");
+    }
 
     final Type t = injectee.getRequiredType();
 
@@ -128,6 +157,14 @@ public class ConfigValuesInjectionResolver implements InjectionResolver<ConfigVa
   @Override
   public boolean isMethodParameterIndicator() {
     return true;
+  }
+
+  public static Properties getPassedProperties() {
+    return passedProperties;
+  }
+
+  public static void setPassedProperties(Properties passedProperties) {
+    ConfigValuesInjectionResolver.passedProperties = passedProperties;
   }
 
 }

@@ -2,12 +2,15 @@ package net.explorviz.shared.config.helper;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.OutputStream;
-import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.Properties;
+import java.util.concurrent.atomic.AtomicBoolean;
 import javax.ws.rs.InternalServerErrorException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 
 /**
@@ -16,45 +19,97 @@ import javax.ws.rs.InternalServerErrorException;
  */
 public final class PropertyHelper {
 
-  private static final String PROPERTIES_FILENAME = "explorviz.properties";
-  private static final String PROPERTIES_PATH;
+  private static final Logger LOGGER = LoggerFactory.getLogger(PropertyHelper.class);
+
+  private static final String PROPERTIES_DEFAULT_FILENAME = "explorviz.properties";
+  private static final String PROPERTIES_CUSTOM_FILENAME = "explorviz-custom.properties";
+  private static final String PROPERTIES_TEST_FILENAME = "explorviz-test.properties";
+
+  private static final String ACTIVE_PROPERTIES_FILENAME;
 
   private static final Properties PROP = new Properties();
 
-  private static final String ERROR_MESSAGE =
-      "Couldn't load properties file. Is WEB-INF/explorviz.properties a valid file?";
+  private final static InternalServerErrorException exception = new InternalServerErrorException(
+      "An internal server error occured. Contact your administrator.");
+
+  private static Properties passedProperties = null;
+  private static AtomicBoolean wasUpdatedViaPassedProperties = new AtomicBoolean(false);
 
   private PropertyHelper() {
     // don't instantiate
   }
 
   static {
+
     final ClassLoader loader = Thread.currentThread().getContextClassLoader();
 
-    final URL urlToProperties = loader.getResource(PROPERTIES_FILENAME);
+    InputStream input = loader.getResourceAsStream(PROPERTIES_TEST_FILENAME);
 
-    if (urlToProperties == null) {
-      throw new InternalServerErrorException(ERROR_MESSAGE);
+    if (input == null) {
+      // no testing environment, use custom or default file
+
+      input = loader.getResourceAsStream(PROPERTIES_CUSTOM_FILENAME);
+
+      if (input == null) {
+        // use default properties
+        input = loader.getResourceAsStream(PROPERTIES_DEFAULT_FILENAME);
+
+        if (input == null) {
+          LOGGER.error("Couldn't load default property file.");
+          throw exception;
+        }
+
+        ACTIVE_PROPERTIES_FILENAME = PROPERTIES_DEFAULT_FILENAME;
+        LOGGER.info("Using default property file.");
+      } else {
+        ACTIVE_PROPERTIES_FILENAME = PROPERTIES_CUSTOM_FILENAME;
+        LOGGER.info("Using custom property file.");
+      }
+    } else {
+      ACTIVE_PROPERTIES_FILENAME = PROPERTIES_TEST_FILENAME;
+      LOGGER.info("Using test property file.");
     }
 
-    PROPERTIES_PATH = loader.getResource(PROPERTIES_FILENAME).getFile();
-
     try {
-      PROP.load(loader.getResourceAsStream(PROPERTIES_FILENAME));
+      PROP.load(input);
     } catch (final IOException e) {
-      throw new InternalServerErrorException(ERROR_MESSAGE, e);
+      LOGGER.error("Couldn't load property file.");
+      throw exception;
     }
   }
 
+  private static void updateProperties(Properties props) {
+    PROP.putAll(props);
+    wasUpdatedViaPassedProperties.set(true);
+  }
+
   public static int getIntegerProperty(final String propName) {
+    if (!wasUpdatedViaPassedProperties.get() && passedProperties != null) {
+      updateProperties(passedProperties);
+      wasUpdatedViaPassedProperties.set(true);
+      LOGGER.info("Updated static PropertyHelper due to passed properties.");
+    }
+
     return Integer.parseInt(getStringProperty(propName));
   }
 
   public static String getStringProperty(final String propName) {
+    if (!wasUpdatedViaPassedProperties.get() && passedProperties != null) {
+      updateProperties(passedProperties);
+      wasUpdatedViaPassedProperties.set(true);
+      LOGGER.info("Updated static PropertyHelper due to passed properties.");
+    }
+
     return String.valueOf(PROP.get(propName));
   }
 
   public static boolean getBooleanProperty(final String propName) {
+    if (!wasUpdatedViaPassedProperties.get() && passedProperties != null) {
+      updateProperties(passedProperties);
+      wasUpdatedViaPassedProperties.set(true);
+      LOGGER.info("Updated static PropertyHelper due to passed properties.");
+    }
+
     return Boolean.parseBoolean(getStringProperty(propName));
   }
 
@@ -70,9 +125,21 @@ public final class PropertyHelper {
       throws FileNotFoundException, IOException {
     PROP.setProperty(propName, String.valueOf(value));
 
-    try (OutputStream out = Files.newOutputStream(Paths.get(PROPERTIES_PATH))) {
+    try (OutputStream out = Files.newOutputStream(Paths.get(ACTIVE_PROPERTIES_FILENAME))) {
       PROP.store(out, null);
     }
+  }
+
+  public static Properties getLoadedProperties() {
+    return PROP;
+  }
+
+  public static Properties getPassedProperties() {
+    return passedProperties;
+  }
+
+  public static void setPassedProperties(Properties passedProperties) {
+    PropertyHelper.passedProperties = passedProperties;
   }
 
 }
