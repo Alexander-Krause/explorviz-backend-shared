@@ -20,7 +20,6 @@ net.explorviz.shared.landscape.model.event
 net.explorviz.shared.landscape.model.helper
 net.explorviz.shared.landscape.model.landscape
 net.explorviz.shared.landscape.model.store
-net.explorviz.shared.landscape.model.store.helper
 net.explorviz.shared.security
 net.explorviz.shared.security.annotations
 net.explorviz.shared.security.filters
