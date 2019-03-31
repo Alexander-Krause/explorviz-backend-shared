@@ -13,6 +13,7 @@ import net.explorviz.shared.config.annotations.ConfigValues;
 import net.explorviz.shared.config.annotations.injection.ConfigInjectionResolver;
 import net.explorviz.shared.config.annotations.injection.ConfigValuesInjectionResolver;
 import net.explorviz.shared.exceptions.ErrorObjectHelper;
+import net.explorviz.shared.exceptions.JsonApiErrorObjectHelper;
 import net.explorviz.shared.security.TokenParserService;
 import org.glassfish.hk2.api.InjectionResolver;
 import org.glassfish.hk2.api.PerLookup;
@@ -42,7 +43,7 @@ public class CommonDependencyInjectionBinder extends AbstractBinder {
     this.bind(new ConfigInjectionResolver()).to(new TypeLiteral<InjectionResolver<Config>>() {});
 
     // ErrorObject Handler
-    this.bind(ErrorObjectHelper.class).to(ErrorObjectHelper.class).in(Singleton.class);
+    this.bind(JsonApiErrorObjectHelper.class).to(ErrorObjectHelper.class).in(Singleton.class);
 
     // Id Generator
     this.bind(UuidServiceIdGenerator.class).to(ServiceIdGenerator.class).in(Singleton.class);

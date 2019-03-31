@@ -1,7 +1,7 @@
 package net.explorviz.shared.exceptions.mapper;
 
+import javax.inject.Inject;
 import javax.ws.rs.WebApplicationException;
-import javax.ws.rs.core.Context;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.ext.ExceptionMapper;
 import net.explorviz.shared.exceptions.ErrorObjectHelper;
@@ -17,8 +17,12 @@ public class WebApplicationExceptionMapper implements ExceptionMapper<WebApplica
 
   private static final Logger LOGGER = LoggerFactory.getLogger(WebApplicationExceptionMapper.class);
 
-  @Context
   private ErrorObjectHelper errorObjectHelper;
+
+  @Inject
+  public WebApplicationExceptionMapper(final ErrorObjectHelper errorObjectHelper) {
+    this.errorObjectHelper = errorObjectHelper;
+  }
 
   @Override
   public Response toResponse(final WebApplicationException exception) {
@@ -27,8 +31,8 @@ public class WebApplicationExceptionMapper implements ExceptionMapper<WebApplica
 
     LOGGER.error("Error occured: HTTP Status={}", httpStatus, exception);
 
-    final String errorString =
-        errorObjectHelper.createErrorObjectString(httpStatus, "Error", exception.getMessage());
+    final String errorString = errorObjectHelper.createErrorObjectString(httpStatus,
+        "An error occured", exception.getMessage());
 
     return Response.status(httpStatus).header("Content-Type", "application/json")
         .entity(errorString).build();
