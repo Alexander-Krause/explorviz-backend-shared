@@ -2,6 +2,8 @@ package net.explorviz.shared.config.annotations.injection;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.Method;
 import java.lang.reflect.Type;
 import java.util.Properties;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -131,16 +133,33 @@ public class ConfigInjectionResolver implements InjectionResolver<Config> {
   }
 
   private String handlePropertyLoading(final Injectee injectee) {
-    final Config annotation = injectee.getParent().getAnnotation(Config.class);
 
+    // @Config annotation at method, field or constructor level
+    Config annotation = injectee.getParent().getAnnotation(Config.class);
+
+    if (annotation == null) {
+
+      // Check if @Config annotation is at constructor parameter level
+      if (injectee.getParent() instanceof Constructor) {
+        Constructor<?> ctor = (Constructor<?>) injectee.getParent();
+        annotation = (Config) ctor.getParameterAnnotations()[injectee.getPosition()][0];
+      }
+      // Check if @Config annotation is at method parameter level
+      else if (injectee.getParent() instanceof Method) {
+        Method ctor = (Method) injectee.getParent();
+        annotation = (Config) ctor.getParameterAnnotations()[injectee.getPosition()][0];
+      }
+    }
+
+    // Finally resolve @Config annotation value and
+    // return the related property
     if (annotation != null) {
-
       final String propName = annotation.value();
       return String.valueOf(PROP.get(propName));
     }
 
-    LOGGER.error("Property injection for type 'String' failed: {}",
-        "Annotation for property injection is not present.");
+    LOGGER.error(
+        "@Config property injection failed. Annotation for property injection is not present.");
     throw this.exception;
   }
 

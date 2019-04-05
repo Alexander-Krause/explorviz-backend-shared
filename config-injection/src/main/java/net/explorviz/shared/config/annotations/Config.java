@@ -21,7 +21,7 @@ import java.lang.annotation.Target;
  *
  * @see net.explorviz.shared.config.annotations.injection.ConfigInjectionResolver
  */
-@Target({ElementType.CONSTRUCTOR, ElementType.PARAMETER, ElementType.METHOD, ElementType.FIELD})
+@Target({ElementType.CONSTRUCTOR, ElementType.PARAMETER, ElementType.FIELD})
 @Retention(RetentionPolicy.RUNTIME)
 @Repeatable(ConfigValues.class)
 public @interface Config {
