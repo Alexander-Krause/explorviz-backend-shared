@@ -155,7 +155,14 @@ public class ConfigInjectionResolver implements InjectionResolver<Config> {
     // return the related property
     if (annotation != null) {
       final String propName = annotation.value();
-      return String.valueOf(PROP.get(propName));
+
+      Object resolvedProp = PROP.get(propName);
+
+      if (resolvedProp == null) {
+        LOGGER.error("Couldn't resolve property with key {}", propName);
+      }
+
+      return String.valueOf(resolvedProp);
     }
 
     LOGGER.error(
