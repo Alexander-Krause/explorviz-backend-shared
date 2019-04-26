@@ -23,8 +23,8 @@ public class Clazz extends BaseEntity {
   @Relationship("clazzCommunications")
   private List<ClazzCommunication> clazzCommunications = new ArrayList<>();
 
-  public Clazz() {
-    // Jackson
+  public Clazz(final String id) {
+    super(id);
   }
 
   public String getName() {

@@ -14,15 +14,15 @@ public class Timestamp extends BaseEntity {
   private long timestamp;
   private int totalRequests;
 
-  public Timestamp(final long timestampValue, final int requests) {
-    super();
+  public Timestamp(final String id, final long timestampValue, final int requests) {
+    super(id);
     this.setTimestamp(timestampValue);
     this.setTotalRequests(requests);
   }
 
-  public Timestamp() {
-    super();
-    // explicit default constructor
+  public Timestamp(final String id) {
+    super(id);
+    this.setTimestamp(System.currentTimeMillis());
   }
 
   public long getTimestamp() {

@@ -40,9 +40,10 @@ public class TraceStep extends BaseEntity {
    *
    * 
    */
-  public TraceStep(final Trace parentTrace, final ClazzCommunication clazzCommunication,
-      final int tracePosition, final int requests, final float averageResponseTime,
-      final float currentTraceDuration) {
+  public TraceStep(final String id, final Trace parentTrace,
+      final ClazzCommunication clazzCommunication, final int tracePosition, final int requests,
+      final float averageResponseTime, final float currentTraceDuration) {
+    super(id);
     this.setParentTrace(parentTrace);
     this.setClazzCommunication(clazzCommunication);
     this.setTracePosition(tracePosition);
@@ -50,9 +51,9 @@ public class TraceStep extends BaseEntity {
     this.setRequests(requests);
     this.setCurrentTraceDuration(currentTraceDuration);
   }
-  
-  public TraceStep() {
-    // Jackson
+
+  public TraceStep(final String id) {
+    super(id);
   }
 
   public Trace getParentTrace() {

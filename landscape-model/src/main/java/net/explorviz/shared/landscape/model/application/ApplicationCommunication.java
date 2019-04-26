@@ -28,10 +28,10 @@ public class ApplicationCommunication extends BaseEntity {
   private Clazz targetClazz;
 
 
-  public ApplicationCommunication() {
-    // Jackson
+  public ApplicationCommunication(final String id) {
+    super(id);
   }
-  
+
   public int getRequests() {
     return this.requests;
   }

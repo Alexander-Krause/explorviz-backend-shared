@@ -12,44 +12,45 @@ import net.explorviz.shared.landscape.model.landscape.Landscape;
 @Type("event")
 public class Event extends BaseEntity {
 
-	private long timestamp;
+  private long timestamp;
 
-	private EEventType eventType = EEventType.UNKNOWN;
+  private EEventType eventType = EEventType.UNKNOWN;
 
-	private String eventMessage;
+  private String eventMessage;
 
-	public Event(long timestamp, EEventType eventType, String eventMessage) {
-		this.timestamp = timestamp;
-		this.eventType = eventType;
-		this.eventMessage = eventMessage;
-	}
-	
-	public Event() {
-	  // Jackson
-	}
+  public Event(final String id, long timestamp, EEventType eventType, String eventMessage) {
+    super(id);
+    this.timestamp = timestamp;
+    this.eventType = eventType;
+    this.eventMessage = eventMessage;
+  }
 
-	public long getTimestamp() {
-		return timestamp;
-	}
+  public Event(final String id) {
+    super(id);
+  }
 
-	public void setTimestamp(long timestamp) {
-		this.timestamp = timestamp;
-	}
+  public long getTimestamp() {
+    return timestamp;
+  }
 
-	public EEventType getEventType() {
-		return eventType;
-	}
+  public void setTimestamp(long timestamp) {
+    this.timestamp = timestamp;
+  }
 
-	public void setEventType(EEventType eventType) {
-		this.eventType = eventType;
-	}
+  public EEventType getEventType() {
+    return eventType;
+  }
 
-	public String getEventMessage() {
-		return eventMessage;
-	}
+  public void setEventType(EEventType eventType) {
+    this.eventType = eventType;
+  }
 
-	public void setEventMessage(String eventMessage) {
-		this.eventMessage = eventMessage;
-	}
+  public String getEventMessage() {
+    return eventMessage;
+  }
+
+  public void setEventMessage(String eventMessage) {
+    this.eventMessage = eventMessage;
+  }
 
 }

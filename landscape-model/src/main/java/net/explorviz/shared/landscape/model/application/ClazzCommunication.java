@@ -36,10 +36,10 @@ public class ClazzCommunication extends BaseEntity {
   private float averageResponseTime = 0;
 
 
-  public ClazzCommunication() {
-    // Jackson
+  public ClazzCommunication(final String id) {
+    super(id);
   }
-  
+
   public String getOperationName() {
     return this.operationName;
   }
@@ -73,7 +73,8 @@ public class ClazzCommunication extends BaseEntity {
   }
 
   // returns a trace for a given traceId or creates a new one
-  public Trace retrieveTraceByTraceId(final Application application, final String traceId) {
+  public Trace seekOrCreateTraceByTraceId(final String potentialNewTraceId,
+      final Application application, final String traceId) {
     final List<Trace> traces = application.getTraces();
 
     for (final Trace trace : traces) {
@@ -82,20 +83,20 @@ public class ClazzCommunication extends BaseEntity {
       }
     }
     // create a new trace and refer it
-    final Trace newTrace = new Trace(traceId);
+    final Trace newTrace = new Trace(potentialNewTraceId, traceId);
     application.getTraces().add(newTrace);
 
     return newTrace;
   }
 
   // checks if a trace is existing and if not creates one and adds the runtime information
-  public void addTraceStep(final Application application, final String traceId,
-      final int tracePosition, final int requests, final float averageResponseTime,
-      final float currentTraceDuration) {
+  public void addTraceStep(final String potentialNewTraceId, final String traceStepId,
+      final Application application, final String traceId, final int tracePosition,
+      final int requests, final float averageResponseTime, final float currentTraceDuration) {
 
-    final Trace trace = this.retrieveTraceByTraceId(application, traceId);
-    final TraceStep newTraceStep = trace.addTraceStep(tracePosition, requests, averageResponseTime,
-        currentTraceDuration, this);
+    final Trace trace = this.seekOrCreateTraceByTraceId(potentialNewTraceId, application, traceId);
+    final TraceStep newTraceStep = trace.addTraceStep(traceStepId, tracePosition, requests,
+        averageResponseTime, currentTraceDuration, this);
 
     // reference the new trace for the application for easy access
     this.getTraceSteps().add(newTraceStep);

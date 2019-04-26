@@ -32,9 +32,9 @@ public class Landscape extends BaseEntity {
   @Relationship("totalApplicationCommunications")
   private List<ApplicationCommunication> totalApplicationCommunications = new ArrayList<>();
 
-  public Landscape() {
-    super();
-    this.timestamp = new Timestamp();
+  public Landscape(final String id, final Timestamp belongingTimestamp) {
+    super(id);
+    this.timestamp = belongingTimestamp;
   }
 
   public Timestamp getTimestamp() {
@@ -97,7 +97,7 @@ public class Landscape extends BaseEntity {
    * @param landscape - related landscape
    * @param cause - cause of the exception
    */
-  public void createNewException(final String cause) {
+  public void createNewException(final String id, final String cause) {
     long currentMillis = java.lang.System.currentTimeMillis();
 
     final List<Long> timestampsOfExceptionEvents =
@@ -108,7 +108,7 @@ public class Landscape extends BaseEntity {
       currentMillis++;
     }
 
-    this.getEvents().add(new Event(currentMillis, EEventType.EXCEPTION, cause));
+    this.getEvents().add(new Event(id, currentMillis, EEventType.EXCEPTION, cause));
   }
 
 
@@ -119,7 +119,8 @@ public class Landscape extends BaseEntity {
    * @param eventType - type of event
    * @param eventMesssage - message of the event
    */
-  public void createNewEvent(final EEventType eventType, final String eventMesssage) {
+  public void createNewEvent(final String id, final EEventType eventType,
+      final String eventMesssage) {
     long currentMillis = java.lang.System.currentTimeMillis();
 
     final List<Long> timestampsOfEvents =
@@ -130,7 +131,7 @@ public class Landscape extends BaseEntity {
       currentMillis++;
     }
 
-    this.getEvents().add(new Event(currentMillis, eventType, eventMesssage));
+    this.getEvents().add(new Event(id, currentMillis, eventType, eventMesssage));
   }
 
   /**

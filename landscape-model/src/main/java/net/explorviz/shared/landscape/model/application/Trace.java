@@ -24,12 +24,9 @@ public class Trace extends BaseEntity {
 
   @Relationship("traceSteps")
   private List<TraceStep> traceSteps = new ArrayList<>();
-  
-  public Trace() {
-    // Jackson
-  }
 
-  public Trace(final String traceId) {
+  public Trace(final String id, final String traceId) {
+    super(id);
     this.setTraceId(traceId);
   }
 
@@ -43,12 +40,12 @@ public class Trace extends BaseEntity {
    * @param clazzCommunication - starting clazzCommunication
    * @return a new TraceStep
    */
-  public TraceStep addTraceStep(final int tracePosition, final int requests,
-      final float averageResponseTime, final float currentTraceDuration,
+  public TraceStep addTraceStep(final String traceStepId, final int tracePosition,
+      final int requests, final float averageResponseTime, final float currentTraceDuration,
       final ClazzCommunication clazzCommunication) {
 
-    final TraceStep newTraceStep = new TraceStep(this, clazzCommunication, tracePosition, requests,
-        averageResponseTime, currentTraceDuration);
+    final TraceStep newTraceStep = new TraceStep(traceStepId, this, clazzCommunication,
+        tracePosition, requests, averageResponseTime, currentTraceDuration);
 
     final float beforeSum = this.getTotalRequests() * averageResponseTime;
     final float currentSum = requests * averageResponseTime;

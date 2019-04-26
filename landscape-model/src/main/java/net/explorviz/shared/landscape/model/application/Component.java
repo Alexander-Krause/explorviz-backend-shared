@@ -34,8 +34,8 @@ public class Component extends BaseEntity {
   @JsonIgnore
   private Application parentApplication;
 
-  public Component() {
-    // Jackson
+  public Component(final String id) {
+    super(id);
   }
 
   public String getName() {
