@@ -1,11 +1,13 @@
 package net.explorviz.shared.landscape.model.landscape;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.github.jasminb.jsonapi.annotations.Id;
+import com.github.jasminb.jsonapi.annotations.Relationship;
+import com.github.jasminb.jsonapi.annotations.Type;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
-import com.github.jasminb.jsonapi.annotations.Relationship;
-import com.github.jasminb.jsonapi.annotations.Type;
-
 import net.explorviz.shared.landscape.model.application.Application;
 import net.explorviz.shared.landscape.model.application.ApplicationCommunication;
 import net.explorviz.shared.landscape.model.event.EEventType;
@@ -18,7 +20,14 @@ import net.explorviz.shared.landscape.model.store.Timestamp;
  */
 @SuppressWarnings("serial")
 @Type("landscape")
-public class Landscape extends BaseEntity {
+public class Landscape {
+
+  @Id
+  private String id;
+
+  public String getId() {
+    return id;
+  }
 
   @Relationship("timestamp")
   private Timestamp timestamp;
@@ -32,9 +41,11 @@ public class Landscape extends BaseEntity {
   @Relationship("totalApplicationCommunications")
   private List<ApplicationCommunication> totalApplicationCommunications = new ArrayList<>();
 
-  public Landscape(final String id, final Timestamp belongingTimestamp) {
-    super(id);
-    this.timestamp = belongingTimestamp;
+  @JsonCreator
+  public Landscape(@JsonProperty("id") final String id,
+      @JsonProperty("timestamps") final Timestamp timestamp) {
+    this.id = id;
+    this.timestamp = timestamp;
   }
 
   public Timestamp getTimestamp() {

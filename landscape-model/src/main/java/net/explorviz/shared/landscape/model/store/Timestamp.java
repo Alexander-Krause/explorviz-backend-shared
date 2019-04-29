@@ -1,5 +1,7 @@
 package net.explorviz.shared.landscape.model.store;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.github.jasminb.jsonapi.annotations.Type;
 import net.explorviz.shared.landscape.model.helper.BaseEntity;
 
@@ -14,14 +16,20 @@ public class Timestamp extends BaseEntity {
   private long timestamp;
   private int totalRequests;
 
-  public Timestamp(final String id, final long timestampValue, final int requests) {
-    super(id);
+  @JsonCreator
+  public Timestamp(@JsonProperty("id") final String id,
+      @JsonProperty("timestampValue") final long timestampValue,
+      @JsonProperty("requests") final int requests) {
+    // super(id);
+
+    this.id = id;
     this.setTimestamp(timestampValue);
     this.setTotalRequests(requests);
   }
 
-  public Timestamp(final String id) {
-    super(id);
+  public Timestamp(@JsonProperty("id") final String id) {
+    this.id = id;
+    // super(id);
     this.setTimestamp(System.currentTimeMillis());
   }
 
