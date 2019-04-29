@@ -1,5 +1,7 @@
 package net.explorviz.shared.landscape.model.application;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import com.github.jasminb.jsonapi.annotations.Relationship;
 import com.github.jasminb.jsonapi.annotations.Type;
 import net.explorviz.shared.landscape.model.helper.BaseEntity;
@@ -10,6 +12,7 @@ import net.explorviz.shared.landscape.model.helper.BaseEntity;
  */
 @SuppressWarnings("serial")
 @Type("tracestep")
+@JsonIdentityInfo(generator = ObjectIdGenerators.StringIdGenerator.class, property = "super.id")
 public class TraceStep extends BaseEntity {
 
   // related trace
@@ -38,7 +41,7 @@ public class TraceStep extends BaseEntity {
    * @param averageResponseTime - average response time of the trace
    * @param currentTraceDuration - current duration of the trace
    *
-   * 
+   *
    */
   public TraceStep(final String id, final Trace parentTrace,
       final ClazzCommunication clazzCommunication, final int tracePosition, final int requests,

@@ -13,7 +13,7 @@ import net.explorviz.shared.landscape.model.helper.BaseEntity;
  */
 @SuppressWarnings("serial")
 @Type("timestamp")
-@JsonIdentityInfo(generator = ObjectIdGenerators.StringIdGenerator.class, property = "this.id")
+@JsonIdentityInfo(generator = ObjectIdGenerators.StringIdGenerator.class, property = "super.id")
 public class Timestamp extends BaseEntity {
 
   private long timestamp;
@@ -23,17 +23,9 @@ public class Timestamp extends BaseEntity {
   public Timestamp(@JsonProperty("id") final String id,
       @JsonProperty("timestampValue") final long timestampValue,
       @JsonProperty("requests") final int requests) {
-    // super(id);
-
-    this.id = id;
+    super(id);
     this.setTimestamp(timestampValue);
     this.setTotalRequests(requests);
-  }
-
-  public Timestamp(@JsonProperty("id") final String id) {
-    this.id = id;
-    // super(id);
-    this.setTimestamp(System.currentTimeMillis());
   }
 
   public long getTimestamp() {

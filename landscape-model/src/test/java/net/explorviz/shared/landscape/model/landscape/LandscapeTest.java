@@ -3,7 +3,6 @@ package net.explorviz.shared.landscape.model.landscape;
 
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-
 import net.explorviz.shared.landscape.model.event.EEventType;
 import net.explorviz.shared.landscape.model.event.Event;
 import net.explorviz.shared.landscape.model.store.Timestamp;
@@ -16,7 +15,7 @@ public class LandscapeTest {
 
   @BeforeEach
   public void setUp() {
-    l = new Landscape("1", new Timestamp("2"));
+    l = new Landscape("1", new Timestamp("2", 1556558138878L, 300));
   }
 
   /**

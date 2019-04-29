@@ -1,8 +1,9 @@
 package net.explorviz.shared.landscape.model.landscape;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.github.jasminb.jsonapi.annotations.Id;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import com.github.jasminb.jsonapi.annotations.Relationship;
 import com.github.jasminb.jsonapi.annotations.Type;
 import java.util.ArrayList;
@@ -20,14 +21,9 @@ import net.explorviz.shared.landscape.model.store.Timestamp;
  */
 @SuppressWarnings("serial")
 @Type("landscape")
-public class Landscape {
+@JsonIdentityInfo(generator = ObjectIdGenerators.StringIdGenerator.class, property = "super.id")
+public class Landscape extends BaseEntity {
 
-  @Id
-  private String id;
-
-  public String getId() {
-    return id;
-  }
 
   @Relationship("timestamp")
   private Timestamp timestamp;
@@ -44,7 +40,7 @@ public class Landscape {
   @JsonCreator
   public Landscape(@JsonProperty("id") final String id,
       @JsonProperty("timestamps") final Timestamp timestamp) {
-    this.id = id;
+    super(id);
     this.timestamp = timestamp;
   }
 
@@ -113,7 +109,7 @@ public class Landscape {
 
     final List<Long> timestampsOfExceptionEvents =
         this.getEvents().stream().filter(e -> e.getEventType().equals(EEventType.EXCEPTION))
-            .map(Event::getTimestamp).collect(Collectors.toList());
+        .map(Event::getTimestamp).collect(Collectors.toList());
 
     while (timestampsOfExceptionEvents.contains(currentMillis)) {
       currentMillis++;
@@ -136,7 +132,7 @@ public class Landscape {
 
     final List<Long> timestampsOfEvents =
         this.getEvents().stream().filter(e -> !e.getEventType().equals(EEventType.EXCEPTION))
-            .map(Event::getTimestamp).collect(Collectors.toList());
+        .map(Event::getTimestamp).collect(Collectors.toList());
 
     while (timestampsOfEvents.contains(currentMillis)) {
       currentMillis++;

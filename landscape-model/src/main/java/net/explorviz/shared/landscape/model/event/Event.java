@@ -1,7 +1,8 @@
 package net.explorviz.shared.landscape.model.event;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import com.github.jasminb.jsonapi.annotations.Type;
-
 import net.explorviz.shared.landscape.model.helper.BaseEntity;
 import net.explorviz.shared.landscape.model.landscape.Landscape;
 
@@ -10,6 +11,7 @@ import net.explorviz.shared.landscape.model.landscape.Landscape;
  */
 @SuppressWarnings("serial")
 @Type("event")
+@JsonIdentityInfo(generator = ObjectIdGenerators.StringIdGenerator.class, property = "super.id")
 public class Event extends BaseEntity {
 
   private long timestamp;
@@ -18,7 +20,7 @@ public class Event extends BaseEntity {
 
   private String eventMessage;
 
-  public Event(final String id, long timestamp, EEventType eventType, String eventMessage) {
+  public Event(final String id, final long timestamp, final EEventType eventType, final String eventMessage) {
     super(id);
     this.timestamp = timestamp;
     this.eventType = eventType;
@@ -33,7 +35,7 @@ public class Event extends BaseEntity {
     return timestamp;
   }
 
-  public void setTimestamp(long timestamp) {
+  public void setTimestamp(final long timestamp) {
     this.timestamp = timestamp;
   }
 
@@ -41,7 +43,7 @@ public class Event extends BaseEntity {
     return eventType;
   }
 
-  public void setEventType(EEventType eventType) {
+  public void setEventType(final EEventType eventType) {
     this.eventType = eventType;
   }
 
@@ -49,7 +51,7 @@ public class Event extends BaseEntity {
     return eventMessage;
   }
 
-  public void setEventMessage(String eventMessage) {
+  public void setEventMessage(final String eventMessage) {
     this.eventMessage = eventMessage;
   }
 
