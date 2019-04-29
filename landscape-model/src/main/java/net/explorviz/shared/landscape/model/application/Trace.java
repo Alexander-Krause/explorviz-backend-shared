@@ -1,6 +1,8 @@
 package net.explorviz.shared.landscape.model.application;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import com.github.jasminb.jsonapi.annotations.Relationship;
 import com.github.jasminb.jsonapi.annotations.Type;
@@ -28,7 +30,8 @@ public class Trace extends BaseEntity {
   @Relationship("traceSteps")
   private List<TraceStep> traceSteps = new ArrayList<>();
 
-  public Trace(final String id, final String traceId) {
+  @JsonCreator
+  public Trace(@JsonProperty("id") final String id, @JsonProperty("traceId") final String traceId) {
     super(id);
     this.setTraceId(traceId);
   }

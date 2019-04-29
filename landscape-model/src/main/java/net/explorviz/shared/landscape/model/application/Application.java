@@ -1,6 +1,8 @@
 package net.explorviz.shared.landscape.model.application;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import com.github.jasminb.jsonapi.annotations.Relationship;
 import com.github.jasminb.jsonapi.annotations.Type;
@@ -43,7 +45,8 @@ public class Application extends BaseEntity {
   @Relationship("traces")
   private List<Trace> traces = new ArrayList<>();
 
-  public Application(final String id) {
+  @JsonCreator
+  public Application(@JsonProperty("id") final String id) {
     super(id);
   }
 

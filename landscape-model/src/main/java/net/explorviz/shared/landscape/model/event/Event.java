@@ -1,6 +1,8 @@
 package net.explorviz.shared.landscape.model.event;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import com.github.jasminb.jsonapi.annotations.Type;
 import net.explorviz.shared.landscape.model.helper.BaseEntity;
@@ -20,15 +22,14 @@ public class Event extends BaseEntity {
 
   private String eventMessage;
 
-  public Event(final String id, final long timestamp, final EEventType eventType, final String eventMessage) {
+  @JsonCreator
+  public Event(@JsonProperty("id") final String id, @JsonProperty("timestamp") final long timestamp,
+      @JsonProperty("eventType") final EEventType eventType,
+      @JsonProperty("eventMessage") final String eventMessage) {
     super(id);
     this.timestamp = timestamp;
     this.eventType = eventType;
     this.eventMessage = eventMessage;
-  }
-
-  public Event(final String id) {
-    super(id);
   }
 
   public long getTimestamp() {

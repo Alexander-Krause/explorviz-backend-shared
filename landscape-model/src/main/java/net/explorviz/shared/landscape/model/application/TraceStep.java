@@ -1,6 +1,8 @@
 package net.explorviz.shared.landscape.model.application;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import com.github.jasminb.jsonapi.annotations.Relationship;
 import com.github.jasminb.jsonapi.annotations.Type;
@@ -43,9 +45,14 @@ public class TraceStep extends BaseEntity {
    *
    *
    */
-  public TraceStep(final String id, final Trace parentTrace,
-      final ClazzCommunication clazzCommunication, final int tracePosition, final int requests,
-      final float averageResponseTime, final float currentTraceDuration) {
+  @JsonCreator
+  public TraceStep(@JsonProperty("id") final String id,
+      @JsonProperty("parentTrace") final Trace parentTrace,
+      @JsonProperty("clazzCommunication") final ClazzCommunication clazzCommunication,
+      @JsonProperty("tracePosition") final int tracePosition,
+      @JsonProperty("requests") final int requests,
+      @JsonProperty("averageResponseTime") final float averageResponseTime,
+      @JsonProperty("currentTraceDuration") final float currentTraceDuration) {
     super(id);
     this.setParentTrace(parentTrace);
     this.setClazzCommunication(clazzCommunication);
@@ -53,10 +60,6 @@ public class TraceStep extends BaseEntity {
     this.setAverageResponseTime(averageResponseTime);
     this.setRequests(requests);
     this.setCurrentTraceDuration(currentTraceDuration);
-  }
-
-  public TraceStep(final String id) {
-    super(id);
   }
 
   public Trace getParentTrace() {

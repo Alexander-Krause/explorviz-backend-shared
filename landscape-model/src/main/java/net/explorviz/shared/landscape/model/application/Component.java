@@ -1,8 +1,10 @@
 package net.explorviz.shared.landscape.model.application;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import com.github.jasminb.jsonapi.annotations.Relationship;
 import com.github.jasminb.jsonapi.annotations.Type;
@@ -37,7 +39,8 @@ public class Component extends BaseEntity {
   @JsonIgnore
   private Application parentApplication;
 
-  public Component(final String id) {
+  @JsonCreator
+  public Component(@JsonProperty("id") final String id) {
     super(id);
   }
 

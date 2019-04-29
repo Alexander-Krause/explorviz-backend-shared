@@ -1,6 +1,8 @@
 package net.explorviz.shared.landscape.model.landscape;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import com.github.jasminb.jsonapi.annotations.Relationship;
 import com.github.jasminb.jsonapi.annotations.Type;
@@ -25,7 +27,8 @@ public class System extends BaseEntity {
   @Relationship("parent")
   private Landscape parent;
 
-  public System(final String id) {
+  @JsonCreator
+  public System(@JsonProperty("id") final String id) {
     super(id);
   }
 
