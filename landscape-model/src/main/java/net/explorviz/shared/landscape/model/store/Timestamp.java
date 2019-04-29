@@ -1,7 +1,9 @@
 package net.explorviz.shared.landscape.model.store;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import com.github.jasminb.jsonapi.annotations.Type;
 import net.explorviz.shared.landscape.model.helper.BaseEntity;
 
@@ -11,6 +13,7 @@ import net.explorviz.shared.landscape.model.helper.BaseEntity;
  */
 @SuppressWarnings("serial")
 @Type("timestamp")
+@JsonIdentityInfo(generator = ObjectIdGenerators.StringIdGenerator.class, property = "this.id")
 public class Timestamp extends BaseEntity {
 
   private long timestamp;
