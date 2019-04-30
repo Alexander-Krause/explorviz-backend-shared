@@ -1,5 +1,9 @@
 package net.explorviz.shared.landscape.model.application;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import com.github.jasminb.jsonapi.annotations.Relationship;
 import com.github.jasminb.jsonapi.annotations.Type;
 import java.util.ArrayList;
@@ -13,6 +17,7 @@ import org.slf4j.LoggerFactory;
  */
 @SuppressWarnings("serial")
 @Type("clazzcommunication")
+@JsonIdentityInfo(generator = ObjectIdGenerators.StringIdGenerator.class, property = "super.id")
 public class ClazzCommunication extends BaseEntity {
 
   @SuppressWarnings("unused")
@@ -35,11 +40,11 @@ public class ClazzCommunication extends BaseEntity {
   // average response time (for all involved related tracesteps)
   private float averageResponseTime = 0;
 
-
-  public ClazzCommunication() {
-    // Jackson
+  @JsonCreator
+  public ClazzCommunication(@JsonProperty("id") final String id) {
+    super(id);
   }
-  
+
   public String getOperationName() {
     return this.operationName;
   }
@@ -73,7 +78,8 @@ public class ClazzCommunication extends BaseEntity {
   }
 
   // returns a trace for a given traceId or creates a new one
-  public Trace retrieveTraceByTraceId(final Application application, final String traceId) {
+  public Trace seekOrCreateTraceByTraceId(final String potentialNewTraceId,
+      final Application application, final String traceId) {
     final List<Trace> traces = application.getTraces();
 
     for (final Trace trace : traces) {
@@ -82,20 +88,20 @@ public class ClazzCommunication extends BaseEntity {
       }
     }
     // create a new trace and refer it
-    final Trace newTrace = new Trace(traceId);
+    final Trace newTrace = new Trace(potentialNewTraceId, traceId);
     application.getTraces().add(newTrace);
 
     return newTrace;
   }
 
   // checks if a trace is existing and if not creates one and adds the runtime information
-  public void addTraceStep(final Application application, final String traceId,
-      final int tracePosition, final int requests, final float averageResponseTime,
-      final float currentTraceDuration) {
+  public void addTraceStep(final String potentialNewTraceId, final String traceStepId,
+      final Application application, final String traceId, final int tracePosition,
+      final int requests, final float averageResponseTime, final float currentTraceDuration) {
 
-    final Trace trace = this.retrieveTraceByTraceId(application, traceId);
-    final TraceStep newTraceStep = trace.addTraceStep(tracePosition, requests, averageResponseTime,
-        currentTraceDuration, this);
+    final Trace trace = this.seekOrCreateTraceByTraceId(potentialNewTraceId, application, traceId);
+    final TraceStep newTraceStep = trace.addTraceStep(traceStepId, tracePosition, requests,
+        averageResponseTime, currentTraceDuration, this);
 
     // reference the new trace for the application for easy access
     this.getTraceSteps().add(newTraceStep);

@@ -1,5 +1,9 @@
 package net.explorviz.shared.landscape.model.landscape;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import com.github.jasminb.jsonapi.annotations.Relationship;
 import com.github.jasminb.jsonapi.annotations.Type;
 import java.util.ArrayList;
@@ -13,6 +17,7 @@ import net.explorviz.shared.landscape.model.helper.NameComperator;
  */
 @SuppressWarnings("serial")
 @Type("nodegroup")
+@JsonIdentityInfo(generator = ObjectIdGenerators.StringIdGenerator.class, property = "super.id")
 public class NodeGroup extends BaseEntity {
 
   private String name;
@@ -23,11 +28,11 @@ public class NodeGroup extends BaseEntity {
   @Relationship("parent")
   private System parent;
 
-
-  public NodeGroup() {
-    // Jackson
+  @JsonCreator
+  public NodeGroup(@JsonProperty("id") final String id) {
+    super(id);
   }
-  
+
   public String getName() {
     return this.name;
   }

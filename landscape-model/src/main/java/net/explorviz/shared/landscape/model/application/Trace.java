@@ -1,5 +1,9 @@
 package net.explorviz.shared.landscape.model.application;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import com.github.jasminb.jsonapi.annotations.Relationship;
 import com.github.jasminb.jsonapi.annotations.Type;
 import java.util.ArrayList;
@@ -12,6 +16,7 @@ import net.explorviz.shared.landscape.model.helper.BaseEntity;
  */
 @SuppressWarnings("serial")
 @Type("trace")
+@JsonIdentityInfo(generator = ObjectIdGenerators.StringIdGenerator.class, property = "super.id")
 public class Trace extends BaseEntity {
 
   private String traceId;
@@ -24,12 +29,10 @@ public class Trace extends BaseEntity {
 
   @Relationship("traceSteps")
   private List<TraceStep> traceSteps = new ArrayList<>();
-  
-  public Trace() {
-    // Jackson
-  }
 
-  public Trace(final String traceId) {
+  @JsonCreator
+  public Trace(@JsonProperty("id") final String id, @JsonProperty("traceId") final String traceId) {
+    super(id);
     this.setTraceId(traceId);
   }
 
@@ -43,12 +46,12 @@ public class Trace extends BaseEntity {
    * @param clazzCommunication - starting clazzCommunication
    * @return a new TraceStep
    */
-  public TraceStep addTraceStep(final int tracePosition, final int requests,
-      final float averageResponseTime, final float currentTraceDuration,
+  public TraceStep addTraceStep(final String traceStepId, final int tracePosition,
+      final int requests, final float averageResponseTime, final float currentTraceDuration,
       final ClazzCommunication clazzCommunication) {
 
-    final TraceStep newTraceStep = new TraceStep(this, clazzCommunication, tracePosition, requests,
-        averageResponseTime, currentTraceDuration);
+    final TraceStep newTraceStep = new TraceStep(traceStepId, this, clazzCommunication,
+        tracePosition, requests, averageResponseTime, currentTraceDuration);
 
     final float beforeSum = this.getTotalRequests() * averageResponseTime;
     final float currentSum = requests * averageResponseTime;

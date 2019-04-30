@@ -1,7 +1,10 @@
 package net.explorviz.shared.landscape.model.event;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import com.github.jasminb.jsonapi.annotations.Type;
-
 import net.explorviz.shared.landscape.model.helper.BaseEntity;
 import net.explorviz.shared.landscape.model.landscape.Landscape;
 
@@ -10,46 +13,47 @@ import net.explorviz.shared.landscape.model.landscape.Landscape;
  */
 @SuppressWarnings("serial")
 @Type("event")
+@JsonIdentityInfo(generator = ObjectIdGenerators.StringIdGenerator.class, property = "super.id")
 public class Event extends BaseEntity {
 
-	private long timestamp;
+  private long timestamp;
 
-	private EEventType eventType = EEventType.UNKNOWN;
+  private EEventType eventType = EEventType.UNKNOWN;
 
-	private String eventMessage;
+  private String eventMessage;
 
-	public Event(long timestamp, EEventType eventType, String eventMessage) {
-		this.timestamp = timestamp;
-		this.eventType = eventType;
-		this.eventMessage = eventMessage;
-	}
-	
-	public Event() {
-	  // Jackson
-	}
+  @JsonCreator
+  public Event(@JsonProperty("id") final String id, @JsonProperty("timestamp") final long timestamp,
+      @JsonProperty("eventType") final EEventType eventType,
+      @JsonProperty("eventMessage") final String eventMessage) {
+    super(id);
+    this.timestamp = timestamp;
+    this.eventType = eventType;
+    this.eventMessage = eventMessage;
+  }
 
-	public long getTimestamp() {
-		return timestamp;
-	}
+  public long getTimestamp() {
+    return timestamp;
+  }
 
-	public void setTimestamp(long timestamp) {
-		this.timestamp = timestamp;
-	}
+  public void setTimestamp(final long timestamp) {
+    this.timestamp = timestamp;
+  }
 
-	public EEventType getEventType() {
-		return eventType;
-	}
+  public EEventType getEventType() {
+    return eventType;
+  }
 
-	public void setEventType(EEventType eventType) {
-		this.eventType = eventType;
-	}
+  public void setEventType(final EEventType eventType) {
+    this.eventType = eventType;
+  }
 
-	public String getEventMessage() {
-		return eventMessage;
-	}
+  public String getEventMessage() {
+    return eventMessage;
+  }
 
-	public void setEventMessage(String eventMessage) {
-		this.eventMessage = eventMessage;
-	}
+  public void setEventMessage(final String eventMessage) {
+    this.eventMessage = eventMessage;
+  }
 
 }

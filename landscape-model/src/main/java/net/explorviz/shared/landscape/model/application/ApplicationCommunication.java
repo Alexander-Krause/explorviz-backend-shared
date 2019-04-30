@@ -1,5 +1,9 @@
 package net.explorviz.shared.landscape.model.application;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import com.github.jasminb.jsonapi.annotations.Relationship;
 import com.github.jasminb.jsonapi.annotations.Type;
 import net.explorviz.shared.landscape.model.helper.BaseEntity;
@@ -9,6 +13,7 @@ import net.explorviz.shared.landscape.model.helper.BaseEntity;
  */
 @SuppressWarnings("serial")
 @Type("applicationcommunication")
+@JsonIdentityInfo(generator = ObjectIdGenerators.StringIdGenerator.class, property = "super.id")
 public class ApplicationCommunication extends BaseEntity {
 
   private int requests;
@@ -27,11 +32,11 @@ public class ApplicationCommunication extends BaseEntity {
   @Relationship("targetClazz")
   private Clazz targetClazz;
 
-
-  public ApplicationCommunication() {
-    // Jackson
+  @JsonCreator
+  public ApplicationCommunication(@JsonProperty("id") final String id) {
+    super(id);
   }
-  
+
   public int getRequests() {
     return this.requests;
   }

@@ -1,11 +1,14 @@
 package net.explorviz.shared.landscape.model.landscape;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+import com.github.jasminb.jsonapi.annotations.Relationship;
+import com.github.jasminb.jsonapi.annotations.Type;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
-import com.github.jasminb.jsonapi.annotations.Relationship;
-import com.github.jasminb.jsonapi.annotations.Type;
-
 import net.explorviz.shared.landscape.model.application.Application;
 import net.explorviz.shared.landscape.model.application.ApplicationCommunication;
 import net.explorviz.shared.landscape.model.event.EEventType;
@@ -18,7 +21,9 @@ import net.explorviz.shared.landscape.model.store.Timestamp;
  */
 @SuppressWarnings("serial")
 @Type("landscape")
+@JsonIdentityInfo(generator = ObjectIdGenerators.StringIdGenerator.class, property = "super.id")
 public class Landscape extends BaseEntity {
+
 
   @Relationship("timestamp")
   private Timestamp timestamp;
@@ -32,9 +37,11 @@ public class Landscape extends BaseEntity {
   @Relationship("totalApplicationCommunications")
   private List<ApplicationCommunication> totalApplicationCommunications = new ArrayList<>();
 
-  public Landscape() {
-    super();
-    this.timestamp = new Timestamp();
+  @JsonCreator
+  public Landscape(@JsonProperty("id") final String id,
+      @JsonProperty("timestamps") final Timestamp timestamp) {
+    super(id);
+    this.timestamp = timestamp;
   }
 
   public Timestamp getTimestamp() {
@@ -97,18 +104,18 @@ public class Landscape extends BaseEntity {
    * @param landscape - related landscape
    * @param cause - cause of the exception
    */
-  public void createNewException(final String cause) {
+  public void createNewException(final String id, final String cause) {
     long currentMillis = java.lang.System.currentTimeMillis();
 
     final List<Long> timestampsOfExceptionEvents =
         this.getEvents().stream().filter(e -> e.getEventType().equals(EEventType.EXCEPTION))
-            .map(Event::getTimestamp).collect(Collectors.toList());
+        .map(Event::getTimestamp).collect(Collectors.toList());
 
     while (timestampsOfExceptionEvents.contains(currentMillis)) {
       currentMillis++;
     }
 
-    this.getEvents().add(new Event(currentMillis, EEventType.EXCEPTION, cause));
+    this.getEvents().add(new Event(id, currentMillis, EEventType.EXCEPTION, cause));
   }
 
 
@@ -119,18 +126,19 @@ public class Landscape extends BaseEntity {
    * @param eventType - type of event
    * @param eventMesssage - message of the event
    */
-  public void createNewEvent(final EEventType eventType, final String eventMesssage) {
+  public void createNewEvent(final String id, final EEventType eventType,
+      final String eventMesssage) {
     long currentMillis = java.lang.System.currentTimeMillis();
 
     final List<Long> timestampsOfEvents =
         this.getEvents().stream().filter(e -> !e.getEventType().equals(EEventType.EXCEPTION))
-            .map(Event::getTimestamp).collect(Collectors.toList());
+        .map(Event::getTimestamp).collect(Collectors.toList());
 
     while (timestampsOfEvents.contains(currentMillis)) {
       currentMillis++;
     }
 
-    this.getEvents().add(new Event(currentMillis, eventType, eventMesssage));
+    this.getEvents().add(new Event(id, currentMillis, eventType, eventMesssage));
   }
 
   /**

@@ -30,7 +30,9 @@ public final class ModelHelper {
    * @param tracePosition - Position within the trace
    * @param operationName - Name of the called operation
    */
-  public static void addClazzCommunication(final Clazz caller, final Clazz callee,
+  public static void addClazzCommunication(final String potentialNewTraceId,
+      final String potentialNewClazzCommuId, final String potentialNewAggClazzCommuId,
+      final String traceStepId, final Clazz caller, final Clazz callee,
       final Application application, final int requests, final double averageResponseTime,
       final double overallTraceDuration, final String traceId, final int tracePosition,
       final String operationName) {
@@ -45,28 +47,28 @@ public final class ModelHelper {
             (currentAverageResponseTime + (float) averageResponseTime) / 2f);
         final int newTotalRequests = commu.getTotalRequests() + requests;
         commu.setTotalRequests(newTotalRequests);
-        commu.addTraceStep(application, traceId, tracePosition, requests,
-            (float) averageResponseTime, (float) overallTraceDuration);
+        commu.addTraceStep(potentialNewTraceId, traceStepId, application, traceId, tracePosition,
+            requests, (float) averageResponseTime, (float) overallTraceDuration);
 
         return;
       }
     }
 
     // create new clazzCommunication
-    final ClazzCommunication commu = new ClazzCommunication();
+    final ClazzCommunication commu = new ClazzCommunication(potentialNewClazzCommuId);
     commu.setSourceClazz(caller);
     commu.setTargetClazz(callee);
     commu.setOperationName(operationName);
     commu.setAverageResponseTime((float) averageResponseTime);
     commu.setTotalRequests(requests);
-    commu.addTraceStep(application, traceId, tracePosition, requests, (float) averageResponseTime,
-        (float) overallTraceDuration);
+    commu.addTraceStep(potentialNewTraceId, traceStepId, application, traceId, tracePosition,
+        requests, (float) averageResponseTime, (float) overallTraceDuration);
 
     // add clazzCommunication to calling clazz (sourceClazz)
     caller.getClazzCommunications().add(commu);
 
     // add aggregatedClazzCommunication to application
-    ModelHelper.addAggregatedClazzCommunication(application, commu);
+    ModelHelper.addAggregatedClazzCommunication(potentialNewAggClazzCommuId, application, commu);
   }
 
   /**
@@ -133,8 +135,8 @@ public final class ModelHelper {
    * @param application - Related application
    * @param newCommunication - The ClazzCommunication which should be added
    */
-  public static void addAggregatedClazzCommunication(final Application application,
-      final ClazzCommunication newCommunication) {
+  public static void addAggregatedClazzCommunication(final String aggregatedCommuId,
+      final Application application, final ClazzCommunication newCommunication) {
 
     final List<AggregatedClazzCommunication> aggregatedClazzCommunications =
         application.getAggregatedClazzCommunications();
@@ -157,7 +159,8 @@ public final class ModelHelper {
     }
 
     // creates a new aggregatedClazzCommunication
-    final AggregatedClazzCommunication aggCommu = new AggregatedClazzCommunication();
+    final AggregatedClazzCommunication aggCommu =
+        new AggregatedClazzCommunication(aggregatedCommuId);
     aggCommu.setSourceClazz(newCommunication.getSourceClazz());
     aggCommu.setTargetClazz(newCommunication.getTargetClazz());
     aggCommu.setAverageResponseTime(newCommunication.getAverageResponseTime());

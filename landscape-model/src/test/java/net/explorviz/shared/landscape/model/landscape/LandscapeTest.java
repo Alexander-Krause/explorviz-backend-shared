@@ -3,13 +3,9 @@ package net.explorviz.shared.landscape.model.landscape;
 
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-
-import net.explorviz.shared.common.idgen.AtomicEntityIdGenerator;
-import net.explorviz.shared.common.idgen.IdGenerator;
-import net.explorviz.shared.common.idgen.UuidServiceIdGenerator;
 import net.explorviz.shared.landscape.model.event.EEventType;
 import net.explorviz.shared.landscape.model.event.Event;
-import net.explorviz.shared.landscape.model.helper.BaseEntity;
+import net.explorviz.shared.landscape.model.store.Timestamp;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -19,9 +15,7 @@ public class LandscapeTest {
 
   @BeforeEach
   public void setUp() {
-    BaseEntity.initialize(
-        new IdGenerator("landscape", new UuidServiceIdGenerator(), new AtomicEntityIdGenerator()));
-    l = new Landscape();
+    l = new Landscape("1", new Timestamp("2", 1556558138878L, 300));
   }
 
   /**
@@ -36,10 +30,10 @@ public class LandscapeTest {
 
     final String expectedEventMessage = "New application 'jPetStore' on node 'node1' detected";
     final Event expectedEvent =
-        new Event(currentMillis, EEventType.NEWAPPLICATION, expectedEventMessage);
+        new Event("3", currentMillis, EEventType.NEWAPPLICATION, expectedEventMessage);
 
     // test the method and verify
-    l.createNewEvent(EEventType.NEWAPPLICATION, expectedEventMessage);
+    l.createNewEvent("3", EEventType.NEWAPPLICATION, expectedEventMessage);
 
     final Event actualEvent = l.getEvents().get(0);
 
@@ -59,10 +53,10 @@ public class LandscapeTest {
 
     final String expectedCause =
         "Exception thrown in application 'sampleApplication' by class 'boolean java.sql.Statement.execute(String)':\\n ...";
-    final Event expectedEvent = new Event(currentMillis, EEventType.EXCEPTION, expectedCause);
+    final Event expectedEvent = new Event("4", currentMillis, EEventType.EXCEPTION, expectedCause);
 
     // test the method and verify
-    l.createNewException(expectedCause);
+    l.createNewException("4", expectedCause);
 
     final Event actualEvent = l.getEvents().get(0);
 
