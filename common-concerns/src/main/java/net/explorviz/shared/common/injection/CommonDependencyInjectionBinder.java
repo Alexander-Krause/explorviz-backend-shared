@@ -29,8 +29,8 @@ public class CommonDependencyInjectionBinder extends AbstractBinder {
   public void configure() {
 
     // Injectable config properties
-    this.bind(new ConfigInjectionResolver())
-        .to(new TypeLiteral<InjectionResolver<ConfigValues>>() {});
+    this.bind(new ConfigInjectionResolver()).to(new TypeLiteral<InjectionResolver<Config>>() {});
+
     this.bind(new ConfigValuesInjectionResolver())
         .to(new TypeLiteral<InjectionResolver<ConfigValues>>() {});
 
@@ -38,9 +38,6 @@ public class CommonDependencyInjectionBinder extends AbstractBinder {
         .in(Singleton.class);
 
     this.bind(TokenParserService.class).to(TokenParserService.class).in(Singleton.class);
-
-    // injectable config properties
-    this.bind(new ConfigInjectionResolver()).to(new TypeLiteral<InjectionResolver<Config>>() {});
 
     // ErrorObject Handler
     this.bind(JsonApiErrorObjectHelper.class).to(ErrorObjectHelper.class).in(Singleton.class);
