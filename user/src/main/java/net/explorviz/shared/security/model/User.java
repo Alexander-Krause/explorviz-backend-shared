@@ -61,6 +61,11 @@ public class User {
   }
 
 
+  public User(final String id, final String username, final String password, final List<Role> roles) { // NOPMD
+    this(id, username, password, roles);
+  }
+
+
   public String getId() {
     return this.id;
   }
