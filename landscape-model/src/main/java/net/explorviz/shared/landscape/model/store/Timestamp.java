@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import com.github.jasminb.jsonapi.annotations.Type;
 import net.explorviz.shared.landscape.model.helper.BaseEntity;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 
 /**
  * Model representing timestamps (a single software landscape for a specific UNIX timestamp in
@@ -43,5 +44,27 @@ public class Timestamp extends BaseEntity {
   public void setTotalRequests(final int totalRequests) {
     this.totalRequests = totalRequests;
   }
+
+  @Override
+  public int hashCode() {
+    return new HashCodeBuilder().append(timestamp).append(totalRequests).append(id).build();
+  }
+
+  @Override
+  public boolean equals(Object obj) {
+    if (this == obj)
+      return true;
+    if (obj == null)
+      return false;
+    if (getClass() != obj.getClass())
+      return false;
+    Timestamp other = (Timestamp) obj;
+    if (timestamp != other.timestamp)
+      return false;
+    if (totalRequests != other.totalRequests)
+      return false;
+    return true;
+  }
+
 
 }

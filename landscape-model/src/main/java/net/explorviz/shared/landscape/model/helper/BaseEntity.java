@@ -9,6 +9,7 @@ import com.github.jasminb.jsonapi.annotations.Id;
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 
 /**
  * Base Model for all other data model entities.
@@ -45,5 +46,29 @@ public class BaseEntity implements Serializable {
   public Map<String, Object> getExtensionAttributes() {
     return this.extensionAttributes;
   }
+
+  @Override
+  public int hashCode() {
+    return new HashCodeBuilder().append(id).build();
+  }
+
+  @Override
+  public boolean equals(Object obj) {
+    if (this == obj)
+      return true;
+    if (obj == null)
+      return false;
+    if (getClass() != obj.getClass())
+      return false;
+    BaseEntity other = (BaseEntity) obj;
+    if (id == null) {
+      if (other.id != null)
+        return false;
+    } else if (!id.equals(other.id))
+      return false;
+    return true;
+  }
+
+
 
 }
