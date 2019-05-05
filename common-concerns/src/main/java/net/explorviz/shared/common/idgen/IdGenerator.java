@@ -2,7 +2,6 @@ package net.explorviz.shared.common.idgen;
 
 import javax.inject.Inject;
 import net.explorviz.shared.config.annotations.Config;
-import net.explorviz.shared.config.annotations.ConfigValues;
 import org.glassfish.hk2.api.PerLookup;
 import org.jvnet.hk2.annotations.Service;
 import org.slf4j.Logger;
@@ -23,43 +22,34 @@ public class IdGenerator {
 
   private static final Logger LOGGER = LoggerFactory.getLogger(IdGenerator.class);
 
-  @Inject
-  private ServiceIdGenerator serviceIdGenerator;
+  private final ServiceIdGenerator serviceIdGenerator;
 
-  @Inject
-  private EntityIdGenerator entityIdGenerator;
+  private final EntityIdGenerator entityIdGenerator;
 
   private String serviceId;
 
   private final String prefix;
 
-  @ConfigValues(@Config("service.prefix"))
-  public IdGenerator(final String servicePrefix) {
-    this.prefix = servicePrefix;
-  }
 
   /**
-   * Constructor for manual instantiation. Use this when dependency injection is not possible.
-   * Otherwise dependency injection should be preferred.
-   * 
-   * <p>
    * Creates a new IdGenerator based on the given service and entitiy id generators.
-   * </p>
-   * 
+   *
    * @param servicePrefix the prefix of the service using the generator.
    * @param serviceIdGen the {@link ServiceIdGenerator} to use.
    * @param entityIdGen the {@link EntityIdGenerator} to use.
    */
-  public IdGenerator(final String servicePrefix, final ServiceIdGenerator serviceIdGen,
-      final EntityIdGenerator entityIdGen) {
-    this(servicePrefix);
+  @Inject
+  public IdGenerator(final ServiceIdGenerator serviceIdGen, final EntityIdGenerator entityIdGen,
+      @Config("service.prefix") final String servicePrefix) {
     this.serviceIdGenerator = serviceIdGen;
     this.entityIdGenerator = entityIdGen;
+    this.prefix = servicePrefix;
   }
+
 
   /**
    * Generates a new unique identifier.
-   * 
+   *
    * @return the newly generated identifier.
    */
   public String generateId() {
