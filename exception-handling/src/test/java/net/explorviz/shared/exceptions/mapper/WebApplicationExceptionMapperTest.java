@@ -16,7 +16,7 @@ public class WebApplicationExceptionMapperTest {
 
   @BeforeEach
   public void setUp() {
-    ErrorObjectHelper errorObjHelper = new JsonApiErrorObjectHelper();
+    final ErrorObjectHelper errorObjHelper = new JsonApiErrorObjectHelper();
     this.exceptionMapper = new WebApplicationExceptionMapper(errorObjHelper);
   }
 
@@ -25,7 +25,7 @@ public class WebApplicationExceptionMapperTest {
    */
   @Test
   public void testDefaultTitle() {
-    Response r = this.exceptionMapper.toResponse(new NotFoundException());
+    final Response r = this.exceptionMapper.toResponse(new NotFoundException());
     assertTrue(r.getEntity().toString().contains("An error occured"));
   }
 
@@ -36,7 +36,7 @@ public class WebApplicationExceptionMapperTest {
    */
   @Test
   public void testPassingOfStatusCode() {
-    Response r = this.exceptionMapper.toResponse(new NotFoundException());
+    final Response r = this.exceptionMapper.toResponse(new NotFoundException());
     assertEquals(404, r.getStatus());
   }
 
@@ -48,9 +48,9 @@ public class WebApplicationExceptionMapperTest {
 
     final String testBleeding = "does it bleed?";
 
-    Response r = this.exceptionMapper.toResponse(new NotFoundException(testBleeding));
+    final Response r = this.exceptionMapper.toResponse(new NotFoundException(testBleeding));
 
-    String errorObj = r.getEntity().toString();
+    final String errorObj = r.getEntity().toString();
 
     assertTrue(errorObj.contains(testBleeding));
   }

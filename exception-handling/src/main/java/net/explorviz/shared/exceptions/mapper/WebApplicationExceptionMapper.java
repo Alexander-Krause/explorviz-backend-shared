@@ -17,7 +17,7 @@ public class WebApplicationExceptionMapper implements ExceptionMapper<WebApplica
 
   private static final Logger LOGGER = LoggerFactory.getLogger(WebApplicationExceptionMapper.class);
 
-  private ErrorObjectHelper errorObjectHelper;
+  private final ErrorObjectHelper errorObjectHelper;
 
   @Inject
   public WebApplicationExceptionMapper(final ErrorObjectHelper errorObjectHelper) {
@@ -31,7 +31,7 @@ public class WebApplicationExceptionMapper implements ExceptionMapper<WebApplica
 
     LOGGER.error("Error occured: HTTP Status={}", httpStatus, exception);
 
-    final String errorString = errorObjectHelper.createErrorObjectString(httpStatus,
+    final String errorString = this.errorObjectHelper.createErrorObjectString(httpStatus,
         "An error occured", exception.getMessage());
 
     return Response.status(httpStatus).header("Content-Type", "application/json")

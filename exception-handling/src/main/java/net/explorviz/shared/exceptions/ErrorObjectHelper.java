@@ -8,7 +8,7 @@ public interface ErrorObjectHelper {
 
   /**
    * Create an error object with a default HTTP status code.
-   * 
+   *
    * @param errorTitle
    * @param errorDetail
    * @return Stringified error with respect to a certain schema, e.g., Json-Api
@@ -18,7 +18,7 @@ public interface ErrorObjectHelper {
 
   /**
    * Create an error object with a passed HTTP status code.
-   * 
+   *
    * @param httpStatus
    * @param errorTitle
    * @param errorDetail

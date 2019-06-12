@@ -3,7 +3,7 @@ package net.explorviz.shared.exceptions;
 /**
  * Injectable class that can be used to create a stringified JSON-API compliant error object.
  */
-public final class JsonApiErrorObjectHelper implements ErrorObjectHelper{
+public final class JsonApiErrorObjectHelper implements ErrorObjectHelper {
 
   /**
    * Creates a stringified JSON-API compliant error object for the given parameters and with HTTP
@@ -13,8 +13,9 @@ public final class JsonApiErrorObjectHelper implements ErrorObjectHelper{
    * @param errorDetail - A detailed description (!) without implementation details
    * @return The stringified JSON-API compliant error object
    */
+  @Override
   public String createErrorObjectString(final String errorTitle, final String errorDetail) {
-    return createErrorObjectString(500, errorTitle, errorDetail);
+    return this.createErrorObjectString(500, errorTitle, errorDetail);
   }
 
   /**
@@ -26,6 +27,7 @@ public final class JsonApiErrorObjectHelper implements ErrorObjectHelper{
    * @param errorDetail - A detailed description (!) without implementation details
    * @return The stringified JSON-API compliant error object
    */
+  @Override
   public String createErrorObjectString(final int httpStatus, final String errorTitle,
       final String errorDetail) {
 

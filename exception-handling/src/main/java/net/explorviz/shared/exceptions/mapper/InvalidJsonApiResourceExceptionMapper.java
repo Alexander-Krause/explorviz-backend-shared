@@ -11,33 +11,33 @@ import org.slf4j.LoggerFactory;
 /**
  * Exception mapper for {@link InvalidJsonApiResourceException}.
  */
-public class InvalidJsonApiResourceExceptionHandler implements ExceptionMapper<InvalidJsonApiResourceException> {
+public class InvalidJsonApiResourceExceptionMapper
+    implements ExceptionMapper<InvalidJsonApiResourceException> {
 
-  private static final Logger LOGGER = LoggerFactory.getLogger(InvalidJsonApiResourceExceptionHandler.class);
-
+  private static final Logger LOGGER =
+      LoggerFactory.getLogger(InvalidJsonApiResourceExceptionMapper.class);
 
   private static final String CONTENT_TYPE = "Content-Type";
   private static final String MEDIA_TYPE = "application/json";
-  private ErrorObjectHelper errorObjectHelper;
   
-  private final int STATUS = 400;
+  private static final int HTTP_STATUS = 400;
+
+  private final ErrorObjectHelper errorObjectHelper;
 
   @Inject
-  public InvalidJsonApiResourceExceptionHandler(final ErrorObjectHelper errorObjectHelper) {
+  public InvalidJsonApiResourceExceptionMapper(final ErrorObjectHelper errorObjectHelper) {
     this.errorObjectHelper = errorObjectHelper;
   }
 
   @Override
   public Response toResponse(final InvalidJsonApiResourceException exception) {
 
-  
+    LOGGER.error("Error occured: HTTP Status={}", HTTP_STATUS, exception);
 
-    LOGGER.error("Error occured: HTTP Status={}", STATUS, exception);
-
-    final String errorString = errorObjectHelper.createErrorObjectString(STATUS,
+    final String errorString = this.errorObjectHelper.createErrorObjectString(HTTP_STATUS,
         "Bad Request", exception.getMessage());
 
-    return Response.status(STATUS).header(CONTENT_TYPE, MEDIA_TYPE)
-        .entity(errorString).build();
+    return Response.status(HTTP_STATUS).header(CONTENT_TYPE, MEDIA_TYPE).entity(errorString)
+        .build();
   }
 }
