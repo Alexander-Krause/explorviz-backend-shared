@@ -36,35 +36,35 @@ public class JsonApiErrorObjectHelperTest {
   public void testIfErrorObjectIsValidJsonApi() {
 
     // Take error String of ErrorObjectHelper
-    String errorString = this.errorObjectHelper.createErrorObjectString("test", "test");
+    final String errorString = this.errorObjectHelper.createErrorObjectString("test", "test");
 
 
     // Marshall to JsonNode via Jackson
     JsonNode errorJson = null;
     try {
-      errorJson = objectMapper.readTree(errorString);
-    } catch (IOException e) {
+      errorJson = this.objectMapper.readTree(errorString);
+    } catch (final IOException e) {
       fail("Marshalling of error String to JsonNode failed", e);
     }
 
     // Parse to Json-Api library Errors object
     Errors errorsObj = null;
     try {
-      errorsObj = ErrorUtils.parseError(objectMapper, errorJson, Errors.class);
-    } catch (JsonProcessingException e) {
+      errorsObj = ErrorUtils.parseError(this.objectMapper, errorJson, Errors.class);
+    } catch (final JsonProcessingException e) {
       fail("Json-Api ErrorUtils could not parse error Json Node", e);
     }
 
 
     // Create Json-Api library representation of Json-Api generic documents
-    JSONAPIDocument<?> document =
+    final JSONAPIDocument<?> document =
         JSONAPIDocument.createErrorDocument(Collections.singleton(errorsObj.getErrors().get(0)));
 
     // Recreate String from Json-Api document representation
     String serializedErrorString = "";
     try {
-      serializedErrorString = new String(converter.writeDocument(document));
-    } catch (DocumentSerializationException e) {
+      serializedErrorString = new String(this.converter.writeDocument(document));
+    } catch (final DocumentSerializationException e) {
       fail("Could not serialize the deserialized error String", e);
     }
 
@@ -77,13 +77,13 @@ public class JsonApiErrorObjectHelperTest {
    */
   @Test
   public void testDefaultStatusCode() {
-    String errorString = this.errorObjectHelper.createErrorObjectString("test", "test");
+    final String errorString = this.errorObjectHelper.createErrorObjectString("test", "test");
 
     // Marshall to JsonNode via Jackson
     JsonNode errorJson = null;
     try {
-      errorJson = objectMapper.readTree(errorString);
-    } catch (IOException e) {
+      errorJson = this.objectMapper.readTree(errorString);
+    } catch (final IOException e) {
       fail("Marshalling of error String to JsonNode failed", e);
     }
 
@@ -97,25 +97,25 @@ public class JsonApiErrorObjectHelperTest {
   @Test
   public void testDefaultErrorProperties() {
 
-    int statusCode = 400;
-    String errorTitle = "test-error-title";
-    String errorDetails = "test error details.";
+    final int statusCode = 400;
+    final String errorTitle = "test-error-title";
+    final String errorDetails = "test error details.";
 
-    String errorString =
+    final String errorString =
         this.errorObjectHelper.createErrorObjectString(statusCode, errorTitle, errorDetails);
 
     // Marshall to JsonNode via Jackson
     JsonNode errorJson = null;
     try {
-      errorJson = objectMapper.readTree(errorString);
-    } catch (IOException e) {
+      errorJson = this.objectMapper.readTree(errorString);
+    } catch (final IOException e) {
       fail("Marshalling of error String to JsonNode failed", e);
     }
 
-    JsonNode errorObj = errorJson.get("errors").get(0);
-    int serializedStatusCode = errorObj.get("status").asInt();
-    String serializedTitle = errorObj.get("title").asText();
-    String serializedDetails = errorObj.get("detail").asText();
+    final JsonNode errorObj = errorJson.get("errors").get(0);
+    final int serializedStatusCode = errorObj.get("status").asInt();
+    final String serializedTitle = errorObj.get("title").asText();
+    final String serializedDetails = errorObj.get("detail").asText();
 
     assertEquals(statusCode, serializedStatusCode, "Wrong status code after serialization.");
     assertEquals(errorTitle, serializedTitle, "Wrong title after serialization.");

@@ -21,7 +21,7 @@ public class GeneralExceptionMapper implements ExceptionMapper<Throwable> {
 
   private static final int HTTP_ERROR_CODE = 500;
 
-  private ErrorObjectHelper errorObjectHelper;
+  private final ErrorObjectHelper errorObjectHelper;
 
   @Inject
   public GeneralExceptionMapper(final ErrorObjectHelper errorObjectHelper) {
@@ -33,8 +33,8 @@ public class GeneralExceptionMapper implements ExceptionMapper<Throwable> {
 
     LOGGER.error("Error occured: HTTP Status={}", HTTP_ERROR_CODE, exception);
 
-    String errorString =
-        errorObjectHelper.createErrorObjectString(HTTP_ERROR_CODE, "Unknown Server Error.",
+    final String errorString =
+        this.errorObjectHelper.createErrorObjectString(HTTP_ERROR_CODE, "Unknown Server Error.",
             "Unknown Server Error. Please note the time and contact your administrator."); // NOPMD
 
     return Response.status(HTTP_ERROR_CODE).header(CONTENT_TYPE, MEDIA_TYPE).entity(errorString)

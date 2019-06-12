@@ -16,7 +16,7 @@ public class GeneralExceptionMapperTest {
 
   @BeforeEach
   public void setUp() {
-    ErrorObjectHelper errorObjHelper = new JsonApiErrorObjectHelper();
+    final ErrorObjectHelper errorObjHelper = new JsonApiErrorObjectHelper();
     this.exceptionMapper = new GeneralExceptionMapper(errorObjHelper);
   }
 
@@ -25,7 +25,7 @@ public class GeneralExceptionMapperTest {
    */
   @Test
   public void testHttpStatusCode() {
-    Response r = this.exceptionMapper.toResponse(new IOException());
+    final Response r = this.exceptionMapper.toResponse(new IOException());
     assertEquals(500, r.getStatus());
   }
 
@@ -38,9 +38,9 @@ public class GeneralExceptionMapperTest {
 
     final String testBleeding = "does it bleed?";
 
-    Response r = this.exceptionMapper.toResponse(new IOException(testBleeding));
+    final Response r = this.exceptionMapper.toResponse(new IOException(testBleeding));
 
-    String errorObj = r.getEntity().toString();
+    final String errorObj = r.getEntity().toString();
 
     assertFalse(errorObj.contains(testBleeding));
   }
