@@ -154,15 +154,25 @@ public class ConfigInjectionResolver implements InjectionResolver<Config> {
     // Finally resolve @Config annotation value and
     // return the related property
     if (annotation != null) {
+
       final String propName = annotation.value();
+      
+      // try to read environment variable
+      String environmentVariableName = propName.toUpperCase().replace('.', '_');
+      String potentialEnvironmentalValue = System.getenv(environmentVariableName);
 
-      Object resolvedProp = PROP.get(propName);
+      if (potentialEnvironmentalValue != null) {
+        return potentialEnvironmentalValue;
+      } else {
+        // else try to read property in properties file
+        Object resolvedProp = PROP.get(propName);
 
-      if (resolvedProp == null) {
-        LOGGER.error("Couldn't resolve property with key {}", propName);
+        if (resolvedProp == null) {
+          LOGGER.error("Couldn't resolve property with key {}", propName);
+        }
+
+        return String.valueOf(resolvedProp);
       }
-
-      return String.valueOf(resolvedProp);
     }
 
     LOGGER.error(

@@ -140,8 +140,29 @@ public class ConfigValuesInjectionResolver implements InjectionResolver<ConfigVa
 
     if (annotationValue != null) {
 
-      final String propName = annotationValue.value();
-      return String.valueOf(PROP.get(propName));
+      // Finally resolve @Config annotation value and
+      // return the related property
+      if (annotation != null) {
+
+        final String propName = annotationValue.value();
+
+        // try to read environment variable
+        String environmentVariableName = propName.toUpperCase().replace('.', '_');
+        String potentialEnvironmentalValue = System.getenv(environmentVariableName);
+
+        if (potentialEnvironmentalValue != null) {
+          return potentialEnvironmentalValue;
+        } else {
+          // else try to read property in properties file
+          Object resolvedProp = PROP.get(propName);
+
+          if (resolvedProp == null) {
+            LOGGER.error("Couldn't resolve property with key {}", propName);
+          }
+
+          return String.valueOf(resolvedProp);
+        }
+      }
     }
 
     LOGGER.error("Property injection for type 'String' failed: {}",
