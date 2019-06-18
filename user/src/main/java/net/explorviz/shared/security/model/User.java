@@ -34,7 +34,9 @@ public class User {
   @Relationship("roles")
   private List<Role> roles = new ArrayList<>();
 
-
+  private String batchId;
+  
+  
   private String token;
 
   public User() {
@@ -53,11 +55,16 @@ public class User {
    * @param password the password
    * @param roles the roles
    */
-  public User(final String id, final String username, final String password, final List<Role> roles) {
+  public User(final String id, final String username, final String password, final List<Role> roles, final String batchId) {
     this.username = username;
     this.id = id;
     this.password = password;
     this.roles = roles;
+    this.batchId = batchId;
+  }
+  
+  public User(final String id, final String username, final String password, final List<Role> roles) {
+    this(id, username, password, roles, "");
   }
 
 
@@ -73,7 +80,7 @@ public class User {
   public String getUsername() {
     return this.username;
   }
-
+  
   public void setUsername(final String username) {
     this.username = username;
   }
@@ -103,6 +110,12 @@ public class User {
     return this.token;
   }
 
-
+  public String getBatchId() {
+    return batchId;
+  }
+  
+  public void setBatchId(String batchId) {
+    this.batchId = batchId;
+  }
 
 }
