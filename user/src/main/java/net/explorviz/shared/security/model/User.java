@@ -7,7 +7,6 @@ import com.github.jasminb.jsonapi.annotations.Type;
 import java.util.ArrayList;
 import java.util.List;
 import net.explorviz.shared.security.model.roles.Role;
-import net.explorviz.shared.security.model.settings.UserSettings;
 import xyz.morphia.annotations.Entity;
 import xyz.morphia.annotations.Id;
 import xyz.morphia.annotations.IndexOptions;
@@ -35,9 +34,6 @@ public class User {
   @Relationship("roles")
   private List<Role> roles = new ArrayList<>();
 
-  // No relationship or reference due to embedded structure
-  // Composition, not aggregation
-  private UserSettings settings = new UserSettings();
 
   private String token;
 
@@ -62,13 +58,6 @@ public class User {
     this.id = id;
     this.password = password;
     this.roles = roles;
-  }
-
-
-  public User(final String id, final String username, final String password, final List<Role> roles,
-      final UserSettings settings) { // NOPMD
-    this(id, username, password, roles);
-    this.settings = settings;
   }
 
 
@@ -105,13 +94,6 @@ public class User {
     this.roles = roles;
   }
 
-  public UserSettings getSettings() {
-    return this.settings;
-  }
-
-  public void setSettings(final UserSettings settings) {
-    this.settings = settings;
-  }
 
   public void setToken(final String newToken) {
     this.token = newToken;
