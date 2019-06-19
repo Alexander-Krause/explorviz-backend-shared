@@ -25,4 +25,3 @@ net.explorviz.shared.security.annotations
 net.explorviz.shared.security.filters
 net.explorviz.shared.security.model
 net.explorviz.shared.security.model.roles
-net.explorviz.shared.security.model.settings
