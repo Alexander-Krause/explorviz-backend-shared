@@ -1,7 +1,6 @@
 package net.explorviz.shared.querying;
 
 import java.util.Collection;
-import java.util.List;
 
 /**
  * Result of a performed {@link Query} by a {@link Queryable}.
@@ -11,10 +10,10 @@ import java.util.List;
  * @param <T>
  */
 public abstract class QueryResult<T> {
-  
+
   private Query<T> query;
   private Collection<T> resultData;
-  
+
   /**
    * Creates a new QueryResult.
    * 
@@ -26,15 +25,15 @@ public abstract class QueryResult<T> {
     this.resultData = result;
   }
 
-  
-  /** 
+
+  /**
    * 
    * @return the original query that was performed
    */
   public Query<T> getQuery() {
     return query;
   }
-  
+
   /**
    * 
    * @return the actual data the query returned
@@ -50,21 +49,20 @@ public abstract class QueryResult<T> {
   public int getN() {
     return resultData.size();
   }
-  
-  
+
+
   /**
    * 
    * @return index of the next page
    */
   public abstract Integer getNextPage();
-  
+
   /**
    * 
    * @return index of the previous page
    */
   public abstract Integer getPreviousPage();
-  
-  
-  
-  
+
+
+
 }
