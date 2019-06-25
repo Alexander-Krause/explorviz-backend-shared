@@ -23,6 +23,7 @@ public abstract class QueryResult<T> {
    */
   public QueryResult(Query<T> query, Collection<T> result) {
     this.query = query;
+    this.resultData = result;
   }
 
   

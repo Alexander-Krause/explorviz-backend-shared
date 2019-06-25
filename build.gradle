@@ -31,7 +31,7 @@ def exportedProjects= [
 		':discovery-common',
 		':landscape-model',
 		':common-concerns',
-		':querying'
+		':query'
 ]
 
 task alljavadoc(type: Javadoc) {
