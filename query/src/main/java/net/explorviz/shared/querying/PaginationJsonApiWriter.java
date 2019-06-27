@@ -85,7 +85,7 @@ public class PaginationJsonApiWriter<T> implements MessageBodyWriter<QueryResult
       nextUrlBuffer.append("&")
           .append(PAGELEN)
           .append("=")
-          .append(results.getQuery().getPageLength());
+          .append(results.getQuery().getPageSize());
 
       String nextLink = nextUrlBuffer.toString();
       document.addLink(NEXT_LINK, new Link(nextLink));
@@ -98,7 +98,7 @@ public class PaginationJsonApiWriter<T> implements MessageBodyWriter<QueryResult
       prevUrlBuffer.append("&")
           .append(PAGELEN)
           .append("=")
-          .append(results.getQuery().getPageLength());
+          .append(results.getQuery().getPageSize());
 
       String prevLink = prevUrlBuffer.toString();
       document.addLink(PREV_LINK, new Link(prevLink));
@@ -110,7 +110,7 @@ public class PaginationJsonApiWriter<T> implements MessageBodyWriter<QueryResult
     firstUrlBuffer.append("&")
         .append(PAGELEN)
         .append("=")
-        .append(results.getQuery().getPageLength());
+        .append(results.getQuery().getPageSize());
 
     String firstLink = firstUrlBuffer.toString();
     document.addLink(FIRST_LINK, new Link(firstLink));

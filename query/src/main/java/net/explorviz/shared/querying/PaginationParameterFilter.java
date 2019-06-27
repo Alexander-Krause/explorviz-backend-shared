@@ -26,7 +26,7 @@ public class PaginationParameterFilter implements ContainerRequestFilter {
 
   // Names of the parameters are defined by JSON:API
   private static final String PAGENUM = "page[number]";
-  private static final String PAGELEN = "page[size]";
+  private static final String PAGESIZE = "page[size]";
 
   private static final int MAX_PAGE_SIZE = 100;
 
@@ -36,29 +36,32 @@ public class PaginationParameterFilter implements ContainerRequestFilter {
     Map<String, List<String>> queryParams = requestContext.getUriInfo().getQueryParameters(true);
 
     // If none set, skip
-    if (queryParams.get(PAGENUM) == null && queryParams.get(PAGELEN) == null) {
+    if (queryParams.get(PAGENUM) == null && queryParams.get(PAGESIZE) == null) {
       return;
     }
 
 
+
     // Both or none have to be present
-    if ((queryParams.get(PAGENUM) != null && queryParams.get(PAGELEN) == null)
-        || (queryParams.get(PAGENUM) == null && queryParams.get(PAGELEN) != null)) {
+    if ((queryParams.get(PAGENUM) != null && queryParams.get(PAGESIZE) == null)
+        || (queryParams.get(PAGENUM) == null && queryParams.get(PAGESIZE) != null)) {
       throw new BadRequestException(
-          String.format("Both %s and %s have to be specified", PAGELEN, PAGENUM));
+          String.format("Both %s and %s have to be specified", PAGESIZE, PAGENUM));
     }
 
     // Both have to be positive integers
     int num, len;
     try {
       num = Integer.parseInt(queryParams.get(PAGENUM).get(0));
-      len = Integer.parseInt(queryParams.get(PAGELEN).get(0));
+      len = Integer.parseInt(queryParams.get(PAGESIZE).get(0));
       if (len <= 0 || num < 0) {
 
       }
     } catch (NumberFormatException e) {
-      throw new BadRequestException(String
-          .format("%s must be greater than zero, %s must be a positive integer", PAGELEN, PAGENUM));
+      throw new BadRequestException(
+          String.format("%s must be greater than zero, %s must be a positive integer",
+              PAGESIZE,
+              PAGENUM));
     }
 
 
