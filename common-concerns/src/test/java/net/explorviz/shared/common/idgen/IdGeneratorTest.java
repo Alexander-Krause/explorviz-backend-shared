@@ -6,8 +6,8 @@ import net.explorviz.shared.common.injection.CommonDependencyInjectionBinder;
 import org.glassfish.hk2.api.ServiceLocator;
 import org.glassfish.hk2.utilities.ServiceLocatorUtilities;
 import org.glassfish.hk2.utilities.binding.AbstractBinder;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.BeforeEach;
 
 /**
  * Tests the {@link IdGenerator}.
@@ -24,7 +24,7 @@ public class IdGeneratorTest {
   /**
    * Inject dependencies.
    */
-  @Before
+  @BeforeEach
   public void setUp() {
     final AbstractBinder binder = new CommonDependencyInjectionBinder();
     final ServiceLocator locator = ServiceLocatorUtilities.bind(binder);

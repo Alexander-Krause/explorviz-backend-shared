@@ -85,7 +85,7 @@ public class ConfigValuesInjectionResolver implements InjectionResolver<ConfigVa
       
       Properties testProps = new Properties();
       
-      if (testProps != null) {
+      if (inputTest != null) {
         try {
           testProps.load(inputTest);
           PROP.putAll(testProps);
