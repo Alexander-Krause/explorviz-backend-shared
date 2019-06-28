@@ -37,7 +37,7 @@ public class ConfigValuesInjectionResolver implements InjectionResolver<ConfigVa
   private static final String PROPERTIES_TEST_FILENAME = "explorviz-test.properties";
 
 
-  private static final Properties PROP = new Properties();
+  private static Properties PROP = new Properties();
 
   private static Properties passedProperties = null;
 
@@ -56,38 +56,43 @@ public class ConfigValuesInjectionResolver implements InjectionResolver<ConfigVa
     final ClassLoader loader = Thread.currentThread().getContextClassLoader();
 
     if (passedProperties == null) {
-
-      InputStream input = loader.getResourceAsStream(PROPERTIES_TEST_FILENAME);
-
-      if (input == null) {
-        // no testing environment, use custom or default file
-
-        input = loader.getResourceAsStream(PROPERTIES_CUSTOM_FILENAME);
-
-        if (input == null) {
-          // use default properties
-          input = loader.getResourceAsStream(PROPERTIES_DEFAULT_FILENAME);
-
-          if (input == null) {
-            LOGGER.error("Couldn't load default property file.");
-            throw this.exception;
-          }
-
-          LOGGER.info("Using default property file.");
-        } else {
-          LOGGER.info("Using custom property file.");
+      InputStream inputDefaults = loader.getResourceAsStream(PROPERTIES_DEFAULT_FILENAME);
+      InputStream inputCustom = loader.getResourceAsStream(PROPERTIES_CUSTOM_FILENAME);
+      InputStream inputTest = loader.getResourceAsStream(PROPERTIES_TEST_FILENAME);
+      
+      Properties defaultProps = new Properties();
+      
+      if (inputDefaults != null) {
+        try {
+          defaultProps.load(inputDefaults);
+          LOGGER.info("Found default properties");
+          PROP.putAll(defaultProps);
+        } catch (IOException e) {
+          LOGGER.warn("No default properties given");
         }
-      } else {
-        LOGGER.info("Using test property file.");
       }
-
-      try {
-        PROP.load(input);
-      } catch (final IOException e) {
-        LOGGER.error("Couldn't load property file.");
-        throw this.exception;
+      
+      Properties customProps = new Properties();
+      if (inputCustom != null) {
+        try {
+          customProps.load(inputCustom);
+          PROP.putAll(customProps);
+        } catch (IOException e) {
+          LOGGER.info("No custom properties");
+        }
       }
-
+      
+      
+      Properties testProps = new Properties();
+      
+      if (testProps != null) {
+        try {
+          testProps.load(inputTest);
+          PROP.putAll(testProps);
+        } catch (IOException e) {
+          LOGGER.info("No test properties");
+        }
+      }
     } else {
       LOGGER.info("Using passed properties.");
       // use passed properties (e.g. for testing)
