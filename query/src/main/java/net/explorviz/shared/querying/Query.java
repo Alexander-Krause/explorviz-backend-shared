@@ -120,7 +120,7 @@ public class Query<T> {
     // Extract filters. Filter parameters have the form "filter[attribute]=value"
     paramters.entrySet().stream().filter(e -> e.getKey().startsWith(FILTER_PREFIX)).forEach(e -> {
       String name = e.getKey().substring(e.getKey().indexOf('[') + 1, e.getKey().indexOf(']'));
-      attributes.put(name, e.getValue());
+      attributes.put(name.toLowerCase(), e.getValue());
     });
 
     int pageNumber =
