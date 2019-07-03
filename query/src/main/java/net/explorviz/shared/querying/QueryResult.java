@@ -9,7 +9,7 @@ import java.util.Collection;
  *
  * @param <T>
  */
-public abstract class QueryResult<T> {
+public final class QueryResult<T> {
 
   private Query<T> query;
   private Collection<T> resultData;
@@ -55,13 +55,25 @@ public abstract class QueryResult<T> {
    * 
    * @return index of the next page
    */
-  public abstract Integer getNextPage();
+  public Integer getNextPage() {
+    if (query.doPaginate() && resultData.size() > 0) {
+      return query.getPageNumber() + 1;
+    } else {
+      return null;
+    }
+  }
 
   /**
    * 
    * @return index of the previous page
    */
-  public abstract Integer getPreviousPage();
+  public Integer getPreviousPage() {
+    if (query.doPaginate() && query.getPageNumber() > 0) {
+      return query.getPageNumber() - 1;
+    } else {
+      return null;
+    }
+  }
 
 
 
