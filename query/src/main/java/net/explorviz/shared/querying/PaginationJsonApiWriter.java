@@ -31,6 +31,7 @@ public class PaginationJsonApiWriter<T> implements MessageBodyWriter<QueryResult
   private static final String NEXT_LINK = "next";
   private static final String PREV_LINK = "prev";
   private static final String FIRST_LINK = "first";
+  private static final String LAST_LINK = "last";
 
   private static final Logger LOGGER = LoggerFactory.getLogger(PaginationJsonApiWriter.class);
 
@@ -107,13 +108,17 @@ public class PaginationJsonApiWriter<T> implements MessageBodyWriter<QueryResult
     // First Link
     StringBuffer firstUrlBuffer = httpRequest.getRequestURL();
     firstUrlBuffer.append("?").append(PAGENUM).append("=").append(0);
-    firstUrlBuffer.append("&")
-        .append(PAGELEN)
-        .append("=")
-        .append(results.getQuery().getPageSize());
+    firstUrlBuffer.append("&").append(PAGELEN).append("=").append(results.getQuery().getPageSize());
 
     String firstLink = firstUrlBuffer.toString();
     document.addLink(FIRST_LINK, new Link(firstLink));
+
+    // Last Link
+    StringBuffer lastUrlBuffer = httpRequest.getRequestURL();
+    lastUrlBuffer.append("?").append(PAGENUM).append("=").append(results.getLastPage());
+    lastUrlBuffer.append("&").append(PAGELEN).append("=").append(results.getQuery().getPageSize());
+    String lastLink = lastUrlBuffer.toString();
+    document.addLink(LAST_LINK, new Link(lastLink));
   }
 
 
