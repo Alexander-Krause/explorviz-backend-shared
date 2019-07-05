@@ -50,18 +50,20 @@ public class PaginationParameterFilter implements ContainerRequestFilter {
     }
 
     // Both have to be positive integers
-    int num, len;
+    int num;
+    int len;
     try {
       num = Integer.parseInt(queryParams.get(PAGENUM).get(0));
       len = Integer.parseInt(queryParams.get(PAGESIZE).get(0));
-      if (len <= 0 || num < 0) {
-
+      if (len <= 0 || num < 0 || len > MAX_PAGE_SIZE) {
+        throw new BadRequestException(String.format(
+            "%s must greater than zero but smaller then %d,  %s must greater than or equal to zero",
+            PAGESIZE,
+            MAX_PAGE_SIZE,
+            PAGENUM));
       }
     } catch (NumberFormatException e) {
-      throw new BadRequestException(
-          String.format("%s must be greater than zero, %s must be a positive integer",
-              PAGESIZE,
-              PAGENUM));
+      throw new BadRequestException(String.format("%s and %s must be integers", PAGESIZE, PAGENUM));
     }
 
 
