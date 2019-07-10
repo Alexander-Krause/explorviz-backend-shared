@@ -77,9 +77,10 @@ public class Query<T> {
    * 
    * @return a map specifying if and how to filter.
    */
-  public Map<String, List<String>> getFilter() {
+  public Map<String, List<String>> getFilters() {
     return filterAttributes;
   }
+
 
 
   /**
@@ -99,7 +100,7 @@ public class Query<T> {
    * @return {@code True} iff the attributes to filter by are empty.
    */
   public boolean doFilter() {
-    return !getFilter().isEmpty();
+    return !getFilters().isEmpty();
   }
 
 
