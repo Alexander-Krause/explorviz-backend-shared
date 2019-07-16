@@ -7,6 +7,7 @@ import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import com.github.jasminb.jsonapi.annotations.Type;
 import net.explorviz.shared.landscape.model.helper.BaseEntity;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
+import org.apache.commons.lang3.builder.ToStringBuilder;
 
 /**
  * Model representing timestamps (a single software landscape for a specific UNIX timestamp in
@@ -64,6 +65,11 @@ public class Timestamp extends BaseEntity {
     if (totalRequests != other.totalRequests)
       return false;
     return true;
+  }
+  
+  @Override
+  public String toString() {
+    return new ToStringBuilder(this).append(id).append(timestamp).toString();
   }
 
 

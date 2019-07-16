@@ -86,7 +86,12 @@ public final class QueryResult<T> {
     }
   }
 
-
+  /**
+   * If pagination was used on the query, this will return the index of the last page w.r.t. the
+   * given page size.
+   * 
+   * @return index of the last page
+   */
   public Integer getLastPage() {
     if (query.doPaginate()) {
       return (int) Math.ceil((double) total / query.getPageSize()) - 1;

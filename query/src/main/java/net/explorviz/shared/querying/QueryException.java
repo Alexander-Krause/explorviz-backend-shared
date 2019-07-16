@@ -4,6 +4,7 @@ package net.explorviz.shared.querying;
  * Thrown if a {@link Query} could not be performed successfully.
  *
  */
+@SuppressWarnings("serial")
 public class QueryException extends Exception {
 
   public QueryException() {
