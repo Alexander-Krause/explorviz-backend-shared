@@ -31,6 +31,6 @@ If you want to locally develop against this repository, therefore do not wait fo
 To tag the latest state of the master branch execute the following procedure:
 
 1. Checkout master and merge necessary branches (e.g. of pull requests)
-2. `git tag -a v1.X.Y -m "shared source files for ExplorViz version 1.X.Y"` where `X` and `Y` are the values for the last tag incremented by one. Most of the time, you only need to increment the patch version `Y` and not the minor version `X`.
+2. `git tag -a v1.X.Y.Z -m "shared source files for ExplorViz version 1.X.Y.Z"` where `X`, `Y`, `Z` are the values for the last tag incremented by one. Most of the time, you only need to increment the patch version `Y` and `Z`.
 3. `git push origin master --tags`
 4. If required: Update the tag version in related projects, e.g. `explorviz-backend`.
