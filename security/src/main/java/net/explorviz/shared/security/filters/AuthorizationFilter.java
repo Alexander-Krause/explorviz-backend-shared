@@ -43,6 +43,12 @@ public class AuthorizationFilter implements ContainerRequestFilter {
 
   @Override
   public void filter(final ContainerRequestContext requestContext) throws IOException { // NOPMD
+    
+    // Only apply authorization to explorviz resources
+    if (!this.resourceInfo.getResourceClass().getCanonicalName().startsWith("net.explorviz")) {
+      return;
+    }
+
 
     final Method method = resourceInfo.getResourceMethod();
 
@@ -85,9 +91,11 @@ public class AuthorizationFilter implements ContainerRequestFilter {
     }
 
     // Authentication is required for non-annotated methods
+    
     if (!isAuthenticated(requestContext)) {
       throw new ForbiddenException(NOT_AUTHENTICATED_MSG);
     }
+    
   }
 
   private void performAuthorization(final String[] rolesAllowed,
