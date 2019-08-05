@@ -6,7 +6,6 @@ import java.lang.reflect.Type;
 import java.util.Properties;
 import java.util.concurrent.atomic.AtomicBoolean;
 import javax.inject.Singleton;
-import javax.ws.rs.InternalServerErrorException;
 import net.explorviz.shared.config.annotations.Config;
 import net.explorviz.shared.config.annotations.ConfigValues;
 import org.glassfish.hk2.api.Injectee;
@@ -40,9 +39,6 @@ public class ConfigValuesInjectionResolver implements InjectionResolver<ConfigVa
   private static Properties PROP = new Properties();
 
   private static Properties passedProperties = null;
-
-  private final InternalServerErrorException exception = new InternalServerErrorException(
-      "An internal server error occured. Contact your administrator.");
 
   private AtomicBoolean wasUpdatedViaPassedProperties = new AtomicBoolean(false);
 
@@ -120,7 +116,7 @@ public class ConfigValuesInjectionResolver implements InjectionResolver<ConfigVa
         return Integer.valueOf(this.handlePropertyLoading(injectee));
       } catch (final NumberFormatException e) {
         LOGGER.error("Property injection for type 'int' failed. Stacktrace:", e);
-        throw this.exception;
+        return null;
       }
     }
 
@@ -132,8 +128,7 @@ public class ConfigValuesInjectionResolver implements InjectionResolver<ConfigVa
       LOGGER.error("Property injection failed: {}",
           "Type '" + t + "' for property injection is not valid. Use String, int or boolean.");
     }
-    throw this.exception;
-
+    return null;
   }
 
   private String handlePropertyLoading(final Injectee injectee) {
@@ -155,7 +150,11 @@ public class ConfigValuesInjectionResolver implements InjectionResolver<ConfigVa
         String environmentVariableName = propName.toUpperCase().replace('.', '_');
         String potentialEnvironmentalValue = System.getenv(environmentVariableName);
 
+        System.out.println("[TEST]"+ environmentVariableName);
+        
+        
         if (potentialEnvironmentalValue != null) {
+          System.out.println("[TEST]"+ environmentVariableName+ ": " + potentialEnvironmentalValue);
           return potentialEnvironmentalValue;
         } else {
           // else try to read property in properties file
@@ -172,7 +171,7 @@ public class ConfigValuesInjectionResolver implements InjectionResolver<ConfigVa
 
     LOGGER.error("Property injection for type 'String' failed: {}",
         "Annotation for property injection is not present.");
-    throw this.exception;
+    return null;
   }
 
   @Override

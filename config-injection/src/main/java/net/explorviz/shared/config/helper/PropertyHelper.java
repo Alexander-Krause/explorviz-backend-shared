@@ -8,7 +8,6 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.Properties;
 import java.util.concurrent.atomic.AtomicBoolean;
-import javax.ws.rs.InternalServerErrorException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -29,7 +28,7 @@ public final class PropertyHelper {
 
   private static final Properties PROP = new Properties();
 
-  private final static InternalServerErrorException exception = new InternalServerErrorException(
+  private final static IllegalStateException exception = new IllegalStateException(
       "An internal server error occured. Contact your administrator.");
 
   private static Properties passedProperties = null;

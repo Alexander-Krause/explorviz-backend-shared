@@ -8,7 +8,6 @@ import java.lang.reflect.Type;
 import java.util.Properties;
 import java.util.concurrent.atomic.AtomicBoolean;
 import javax.inject.Singleton;
-import javax.ws.rs.InternalServerErrorException;
 import net.explorviz.shared.config.annotations.Config;
 import org.glassfish.hk2.api.Injectee;
 import org.glassfish.hk2.api.InjectionResolver;
@@ -42,8 +41,6 @@ public class ConfigInjectionResolver implements InjectionResolver<Config> {
 
   private static Properties passedProperties = null;
 
-  private final InternalServerErrorException exception = new InternalServerErrorException(
-      "An internal server error occured. Contact your administrator.");
 
   private AtomicBoolean wasUpdatedViaPassedProperties = new AtomicBoolean(false);
 
@@ -123,7 +120,7 @@ public class ConfigInjectionResolver implements InjectionResolver<Config> {
         return Integer.valueOf(this.handlePropertyLoading(injectee));
       } catch (final NumberFormatException e) {
         LOGGER.error("Property injection for type 'int' failed. Stacktrace:", e);
-        throw this.exception;
+        return null;
       }
     }
 
@@ -135,7 +132,7 @@ public class ConfigInjectionResolver implements InjectionResolver<Config> {
       LOGGER.error("Property injection failed: {}",
           "Type '" + t + "' for property injection is not valid. Use String, int or boolean.");
     }
-    throw this.exception;
+    return null;
 
   }
 
@@ -166,8 +163,10 @@ public class ConfigInjectionResolver implements InjectionResolver<Config> {
       
       // try to read environment variable
       String environmentVariableName = propName.toUpperCase().replace('.', '_');
+      
       String potentialEnvironmentalValue = System.getenv(environmentVariableName);
-
+       
+      
       if (potentialEnvironmentalValue != null) {
         return potentialEnvironmentalValue;
       } else {
@@ -184,7 +183,7 @@ public class ConfigInjectionResolver implements InjectionResolver<Config> {
 
     LOGGER.error(
         "@Config property injection failed. Annotation for property injection is not present.");
-    throw this.exception;
+    return null;
   }
 
   @Override
