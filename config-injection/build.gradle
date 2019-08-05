@@ -1,4 +1,4 @@
 dependencies {	
 	// HK2 DI
-	implementation group: 'org.glassfish.hk2', name: 'hk2', version: '2.6.0'
+	api group: 'org.glassfish.hk2', name: 'hk2', version: '2.6.0'
 }
