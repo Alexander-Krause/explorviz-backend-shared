@@ -150,11 +150,8 @@ public class ConfigValuesInjectionResolver implements InjectionResolver<ConfigVa
         String environmentVariableName = propName.toUpperCase().replace('.', '_');
         String potentialEnvironmentalValue = System.getenv(environmentVariableName);
 
-        System.out.println("[TEST]"+ environmentVariableName);
-        
         
         if (potentialEnvironmentalValue != null) {
-          System.out.println("[TEST]"+ environmentVariableName+ ": " + potentialEnvironmentalValue);
           return potentialEnvironmentalValue;
         } else {
           // else try to read property in properties file
