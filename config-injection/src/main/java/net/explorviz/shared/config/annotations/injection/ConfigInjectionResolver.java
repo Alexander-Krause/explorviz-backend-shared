@@ -37,7 +37,7 @@ public class ConfigInjectionResolver implements InjectionResolver<Config> {
   private static final String PROPERTIES_TEST_FILENAME = "explorviz-test.properties";
 
 
-  private static Properties PROP = new Properties();
+  private static Properties props = new Properties();
 
   private static Properties passedProperties = null;
 
@@ -64,7 +64,7 @@ public class ConfigInjectionResolver implements InjectionResolver<Config> {
         try {
           defaultProps.load(inputDefaults);
           LOGGER.info("Found default properties");
-          PROP.putAll(defaultProps);
+          props.putAll(defaultProps);
         } catch (IOException e) {
           LOGGER.warn("No default properties given");
         }
@@ -74,7 +74,7 @@ public class ConfigInjectionResolver implements InjectionResolver<Config> {
       if (inputCustom != null) {
         try {
           customProps.load(inputCustom);
-          PROP.putAll(customProps);
+          props.putAll(customProps);
         } catch (IOException e) {
           LOGGER.info("No custom properties");
         }
@@ -86,7 +86,7 @@ public class ConfigInjectionResolver implements InjectionResolver<Config> {
       if (inputTest != null) {
         try {
           testProps.load(inputTest);
-          PROP.putAll(testProps);
+          props.putAll(testProps);
         } catch (IOException e) {
           LOGGER.info("No test properties");
         }
@@ -95,7 +95,7 @@ public class ConfigInjectionResolver implements InjectionResolver<Config> {
     } else {
       LOGGER.info("Using passed properties.");
       // use passed properties (e.g. for testing)
-      PROP.putAll(passedProperties);
+      props.putAll(passedProperties);
     }
     
   }
@@ -104,7 +104,7 @@ public class ConfigInjectionResolver implements InjectionResolver<Config> {
   public Object resolve(final Injectee injectee, final ServiceHandle<?> root) {
 
     if (!wasUpdatedViaPassedProperties.get() && passedProperties != null) {
-      PROP.putAll(passedProperties);
+      props.putAll(passedProperties);
       wasUpdatedViaPassedProperties.set(true);
       LOGGER.info("Updated config injection due to passed properties.");
     }
@@ -119,8 +119,8 @@ public class ConfigInjectionResolver implements InjectionResolver<Config> {
       try {
         return Integer.valueOf(this.handlePropertyLoading(injectee));
       } catch (final NumberFormatException e) {
-        LOGGER.error("Property injection for type 'int' failed. Stacktrace:", e);
-        return null;
+        LOGGER.error("Property injection for type 'int' failed due to illegal number format");
+        throw new ConfigInjectionException(e);
       }
     }
 
@@ -132,7 +132,7 @@ public class ConfigInjectionResolver implements InjectionResolver<Config> {
       LOGGER.error("Property injection failed: {}",
           "Type '" + t + "' for property injection is not valid. Use String, int or boolean.");
     }
-    return null;
+    throw new ConfigInjectionException("Could not inject property due to unknown type");
 
   }
 
@@ -142,14 +142,12 @@ public class ConfigInjectionResolver implements InjectionResolver<Config> {
     Config annotation = injectee.getParent().getAnnotation(Config.class);
 
     if (annotation == null) {
-
-      // Check if @Config annotation is at constructor parameter level
       if (injectee.getParent() instanceof Constructor) {
+        // Check if @Config annotation is at constructor parameter level
         Constructor<?> ctor = (Constructor<?>) injectee.getParent();
         annotation = (Config) ctor.getParameterAnnotations()[injectee.getPosition()][0];
-      }
-      // Check if @Config annotation is at method parameter level
-      else if (injectee.getParent() instanceof Method) {
+      } else if (injectee.getParent() instanceof Method) {
+        // Check if @Config annotation is at method parameter level
         Method ctor = (Method) injectee.getParent();
         annotation = (Config) ctor.getParameterAnnotations()[injectee.getPosition()][0];
       }
@@ -171,19 +169,21 @@ public class ConfigInjectionResolver implements InjectionResolver<Config> {
         return potentialEnvironmentalValue;
       } else {
         // else try to read property in properties file
-        Object resolvedProp = PROP.get(propName);
+        Object resolvedProp = props.get(propName);
 
         if (resolvedProp == null) {
           LOGGER.error("Couldn't resolve property with key {}", propName);
+          throw new ConfigInjectionException(String.format("Unknown property: %s", propName));
         }
 
         return String.valueOf(resolvedProp);
       }
     }
 
+    // How would that ever happen?
     LOGGER.error(
         "@Config property injection failed. Annotation for property injection is not present.");
-    return null;
+    throw new ConfigInjectionException();
   }
 
   @Override

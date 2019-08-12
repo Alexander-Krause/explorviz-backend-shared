@@ -14,7 +14,7 @@ import org.slf4j.LoggerFactory;
 
 /**
  * Utility class to read configuration properties in non-DI contexts. Use the
- * {@link net.explorviz.shared.annotations.Config} instead.
+ * {@link net.explorviz.shared.config.annotations.Config} instead.
  */
 public final class PropertyHelper {
 
@@ -28,8 +28,11 @@ public final class PropertyHelper {
 
   private static final Properties PROP = new Properties();
 
-  private final static IllegalStateException exception = new IllegalStateException(
+  private static final IllegalStateException EXCEPTION = new IllegalStateException(
       "An internal server error occured. Contact your administrator.");
+
+  private static final String UPDATE_MSG =
+      "Updated static PropertyHelper due to passed properties.";
 
   private static Properties passedProperties = null;
   private static AtomicBoolean wasUpdatedViaPassedProperties = new AtomicBoolean(false);
@@ -55,7 +58,7 @@ public final class PropertyHelper {
 
         if (input == null) {
           LOGGER.error("Couldn't load default property file.");
-          throw exception;
+          throw EXCEPTION;
         }
 
         ACTIVE_PROPERTIES_FILENAME = PROPERTIES_DEFAULT_FILENAME;
@@ -73,7 +76,7 @@ public final class PropertyHelper {
       PROP.load(input);
     } catch (final IOException e) {
       LOGGER.error("Couldn't load property file.");
-      throw exception;
+      throw EXCEPTION;
     }
   }
 
@@ -86,7 +89,7 @@ public final class PropertyHelper {
     if (!wasUpdatedViaPassedProperties.get() && passedProperties != null) {
       updateProperties(passedProperties);
       wasUpdatedViaPassedProperties.set(true);
-      LOGGER.info("Updated static PropertyHelper due to passed properties.");
+      LOGGER.info(UPDATE_MSG);
     }
 
     return Integer.parseInt(getStringProperty(propName));
@@ -96,7 +99,7 @@ public final class PropertyHelper {
     if (!wasUpdatedViaPassedProperties.get() && passedProperties != null) {
       updateProperties(passedProperties);
       wasUpdatedViaPassedProperties.set(true);
-      LOGGER.info("Updated static PropertyHelper due to passed properties.");
+      LOGGER.info(UPDATE_MSG);
     }
 
     return String.valueOf(PROP.get(propName));
@@ -106,7 +109,7 @@ public final class PropertyHelper {
     if (!wasUpdatedViaPassedProperties.get() && passedProperties != null) {
       updateProperties(passedProperties);
       wasUpdatedViaPassedProperties.set(true);
-      LOGGER.info("Updated static PropertyHelper due to passed properties.");
+      LOGGER.info(UPDATE_MSG);
     }
 
     return Boolean.parseBoolean(getStringProperty(propName));

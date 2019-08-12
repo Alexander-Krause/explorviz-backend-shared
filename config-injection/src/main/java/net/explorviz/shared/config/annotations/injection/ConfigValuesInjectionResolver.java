@@ -36,7 +36,7 @@ public class ConfigValuesInjectionResolver implements InjectionResolver<ConfigVa
   private static final String PROPERTIES_TEST_FILENAME = "explorviz-test.properties";
 
 
-  private static Properties PROP = new Properties();
+  private static Properties props = new Properties();
 
   private static Properties passedProperties = null;
 
@@ -62,7 +62,7 @@ public class ConfigValuesInjectionResolver implements InjectionResolver<ConfigVa
         try {
           defaultProps.load(inputDefaults);
           LOGGER.info("Found default properties");
-          PROP.putAll(defaultProps);
+          props.putAll(defaultProps);
         } catch (IOException e) {
           LOGGER.warn("No default properties given");
         }
@@ -72,7 +72,7 @@ public class ConfigValuesInjectionResolver implements InjectionResolver<ConfigVa
       if (inputCustom != null) {
         try {
           customProps.load(inputCustom);
-          PROP.putAll(customProps);
+          props.putAll(customProps);
         } catch (IOException e) {
           LOGGER.info("No custom properties");
         }
@@ -84,7 +84,7 @@ public class ConfigValuesInjectionResolver implements InjectionResolver<ConfigVa
       if (inputTest != null) {
         try {
           testProps.load(inputTest);
-          PROP.putAll(testProps);
+          props.putAll(testProps);
         } catch (IOException e) {
           LOGGER.info("No test properties");
         }
@@ -92,7 +92,7 @@ public class ConfigValuesInjectionResolver implements InjectionResolver<ConfigVa
     } else {
       LOGGER.info("Using passed properties.");
       // use passed properties (e.g. for testing)
-      PROP.putAll(passedProperties);
+      props.putAll(passedProperties);
     }
   }
 
@@ -100,7 +100,7 @@ public class ConfigValuesInjectionResolver implements InjectionResolver<ConfigVa
   public Object resolve(final Injectee injectee, final ServiceHandle<?> root) {
 
     if (!wasUpdatedViaPassedProperties.get() && passedProperties != null) {
-      PROP.putAll(passedProperties);
+      props.putAll(passedProperties);
       wasUpdatedViaPassedProperties.set(true);
       LOGGER.info("Updated config injection due to passed properties.");
     }
@@ -116,7 +116,7 @@ public class ConfigValuesInjectionResolver implements InjectionResolver<ConfigVa
         return Integer.valueOf(this.handlePropertyLoading(injectee));
       } catch (final NumberFormatException e) {
         LOGGER.error("Property injection for type 'int' failed. Stacktrace:", e);
-        return null;
+        throw new ConfigInjectionException(e);
       }
     }
 
@@ -128,7 +128,7 @@ public class ConfigValuesInjectionResolver implements InjectionResolver<ConfigVa
       LOGGER.error("Property injection failed: {}",
           "Type '" + t + "' for property injection is not valid. Use String, int or boolean.");
     }
-    return null;
+    throw new ConfigInjectionException("Could not inject property due to unknown type");
   }
 
   private String handlePropertyLoading(final Injectee injectee) {
@@ -155,10 +155,11 @@ public class ConfigValuesInjectionResolver implements InjectionResolver<ConfigVa
           return potentialEnvironmentalValue;
         } else {
           // else try to read property in properties file
-          Object resolvedProp = PROP.get(propName);
+          Object resolvedProp = props.get(propName);
 
           if (resolvedProp == null) {
             LOGGER.error("Couldn't resolve property with key {}", propName);
+            throw new ConfigInjectionException(String.format("Unknown property: %s", propName));
           }
 
           return String.valueOf(resolvedProp);
@@ -168,7 +169,7 @@ public class ConfigValuesInjectionResolver implements InjectionResolver<ConfigVa
 
     LOGGER.error("Property injection for type 'String' failed: {}",
         "Annotation for property injection is not present.");
-    return null;
+    throw new ConfigInjectionException();
   }
 
   @Override
