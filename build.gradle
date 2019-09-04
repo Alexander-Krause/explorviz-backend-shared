@@ -13,7 +13,8 @@ allprojects {
     
     dependencies {
     	// Logger
-		implementation group: 'org.slf4j', name: 'slf4j-simple', version: '1.6.1'
+		// implementation group: 'org.slf4j', name: 'slf4j-simple', version: '1.6.1'
+		implementation group: 'org.slf4j', name: 'slf4j-api', version: '1.7.28'
 		
 		testImplementation 'org.junit.jupiter:junit-jupiter-engine:5.4.0'
 		testImplementation 'org.junit.platform:junit-platform-runner:1.4.0'
