@@ -7,8 +7,10 @@ build
 
 bin
 .classpath
+**/out/
 
 .project
+.idea
 
 .DS_Store
 
