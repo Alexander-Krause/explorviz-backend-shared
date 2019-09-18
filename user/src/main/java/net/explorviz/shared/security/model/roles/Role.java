@@ -12,26 +12,26 @@ public class Role {
 
   @Id
   @com.github.jasminb.jsonapi.annotations.Id
-  private String descriptor;
+  private String name;
 
   public Role() {
     // For MongoDB
   }
 
-  public Role( final String descriptor) {
-    this.descriptor = descriptor;
+  public Role( final String name) {
+    this.name = name;
   }
 
   
 
-  public String getDescriptor() {
-    return this.descriptor;
+  public String getName() {
+    return this.name;
   }
 
 
 
-  public void setDescriptor(final String descriptor) {
-    this.descriptor = descriptor;
+  public void setName(final String name) {
+    this.name = name;
   }
 
   @Override
@@ -48,17 +48,17 @@ public class Role {
 
     final Role other = (Role) obj;
 
-    return new EqualsBuilder().append(this.descriptor, other.getDescriptor()).build();
+    return new EqualsBuilder().append(this.name, other.getName()).build();
   }
 
   @Override
   public int hashCode() {
-    return new HashCodeBuilder().append(this.descriptor).build();
+    return new HashCodeBuilder().append(this.name).build();
   }
 
   @Override
   public String toString() {
-    return "{" + this.descriptor + "}";
+    return "{" + this.name + "}";
   }
 
 

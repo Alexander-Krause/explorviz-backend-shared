@@ -40,7 +40,7 @@ public class TokenBasedSecurityContext implements SecurityContext {
   @Override
   public boolean isUserInRole(final String s) {
     for (final Role r : this.authenticatedUserDetails.getRoles()) {
-      if (r.getDescriptor().equals(s)) {
+      if (r.getName().equals(s)) {
         return true;
       }
     }
