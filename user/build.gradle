@@ -1,6 +1,11 @@
 dependencies {
-	// Config subproject
-	implementation project(':config-injection')
+
+	if(useRemoteSharedProject.toBoolean()) {
+		implementation group: 'net.explorviz', name: 'config-injection', version: "${sharedProjectVersion}"
+	} else {
+		// Config subproject
+		implementation project(':config-injection')	
+	}
 	
 	// JSON-API parsing
   	implementation group: 'com.github.jasminb', name: 'jsonapi-converter', version:'0.8'
