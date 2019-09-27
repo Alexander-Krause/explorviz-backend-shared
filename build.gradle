@@ -4,6 +4,11 @@ def projectURL= 'https://www.explorviz.net'
 def footerText = '<span>Copyright 2013 - 2019</span> by the <a href="https://www.explorviz.net" target="_blank">ExplorViz project</a>'
 
 subprojects {
+	
+	def isTravisBuild = Boolean.valueOf(System.getenv('TRAVIS'));
+	isTravisBuild = isTravisBuild ? isTravisBuild : false;
+	
+	def travisBranch = String.valueOf(System.getenv('TRAVIS_BRANCH'));
 
 	apply plugin: "java-library"
 	apply plugin: "maven"

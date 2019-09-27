@@ -1,12 +1,7 @@
 dependencies {
-
-	def systemEnv = Boolean.valueOf(System.getenv('USE_REMOTE_PROJECT'));
-  	def localEnv = useRemoteSharedProject.toBoolean();
   	
-  	def shouldUseRemoteProject = systemEnv ? systemEnv : localEnv;
-  	
-  	if(shouldUseRemoteProject) {
-		implementation "net.explorviz:config-injection:${sharedProjectVersion}"
+  	if(isTravisBuild) {
+		implementation "net.explorviz:config-injection:${travisBranch}"
 	} else {
 		// Config subproject
 		implementation project(':config-injection')	
@@ -22,4 +17,8 @@ dependencies {
 	implementation group: 'org.apache.commons', name: 'commons-lang3', version: '3.8.1'
 	
 	implementation group: 'org.glassfish.jersey.containers', name: 'jersey-container-servlet', version:'2.27'
+}
+
+if(isTravisBuild) {
+	compileJava.dependsOn project(':config-injection').uploadArchives
 }

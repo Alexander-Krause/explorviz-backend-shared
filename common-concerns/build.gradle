@@ -3,16 +3,11 @@ dependencies {
   	implementation group: 'com.github.jasminb', name: 'jsonapi-converter', version:'0.8'
   	
   	implementation group: 'org.glassfish.jersey.containers', name: 'jersey-container-servlet', version:'2.27'
-  	
-  	def systemEnv = Boolean.valueOf(System.getenv('USE_REMOTE_PROJECT'));
-  	def localEnv = useRemoteSharedProject.toBoolean();
-  	
-  	def shouldUseRemoteProject = systemEnv ? systemEnv : localEnv;
-  	
-  	if(shouldUseRemoteProject) {
-  		implementation "net.explorviz:config-injection:${sharedProjectVersion}"
-		implementation "net.explorviz:security:${sharedProjectVersion}"
-		implementation "net.explorviz:exception-handling:${sharedProjectVersion}"
+  	  	  	
+  	if(isTravisBuild) {
+  		implementation "net.explorviz:config-injection:${travisBranch}"
+		implementation "net.explorviz:security:${travisBranch}"
+		implementation "net.explorviz:exception-handling:${travisBranch}"
 	} else {
 		implementation project(':config-injection')	
 		implementation project(':security')
@@ -24,4 +19,10 @@ dependencies {
 	
 	// Redis client
 	implementation group: 'redis.clients', name: 'jedis',  version: '2.9.0'
+}
+
+if(isTravisBuild) {
+	compileJava.dependsOn project(':config-injection').uploadArchives
+	compileJava.dependsOn project(':security').uploadArchives
+	compileJava.dependsOn project(':exception-handling').uploadArchives
 }
