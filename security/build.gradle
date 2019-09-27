@@ -1,8 +1,8 @@
 dependencies {
   	
   	if(isTravisSnapshotStage) {
-		implementation "net.explorviz:user:${travisBranch}"
-		implementation "net.explorviz:config-injection:${travisBranch}"
+		implementation "net.explorviz:user:${travisBranch}-SNAPSHOT"
+		implementation "net.explorviz:config-injection:${travisBranch}-SNAPSHOT"
 	} else {
 		implementation project(':user')	
 		implementation project(':config-injection')

@@ -5,9 +5,9 @@ dependencies {
   	implementation group: 'org.glassfish.jersey.containers', name: 'jersey-container-servlet', version:'2.27'
   	  	  	
   	if(isTravisSnapshotStage) {
-  		implementation "net.explorviz:config-injection:${travisBranch}"
-		implementation "net.explorviz:security:${travisBranch}"
-		implementation "net.explorviz:exception-handling:${travisBranch}"
+  		implementation "net.explorviz:config-injection:${travisBranch}-SNAPSHOT"
+		implementation "net.explorviz:security:${travisBranch}-SNAPSHOT"
+		implementation "net.explorviz:exception-handling:${travisBranch}-SNAPSHOT"
 	} else {
 		implementation project(':config-injection')	
 		implementation project(':security')
