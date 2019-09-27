@@ -23,7 +23,7 @@ public class RoleJwtDeserializer extends StdDeserializer<List<String>> {
     final JsonNode node = p.getCodec().readTree(p);
 
     node.forEach((nodeElem) -> {
-      final String role = new String(nodeElem.get("descriptor").asText());
+      final String role = nodeElem.asText();
       roleList.add(role);
     });
 

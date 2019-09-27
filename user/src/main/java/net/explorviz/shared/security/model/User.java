@@ -30,8 +30,6 @@ public class User {
   @JsonProperty(access = Access.WRITE_ONLY)
   private String password;
 
-  @Reference
-  @Relationship("roles")
   private List<String> roles = new ArrayList<>();
 
   private String batchId;
