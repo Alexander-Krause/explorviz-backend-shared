@@ -22,7 +22,7 @@ jobs:
       name: "Snapshot Publishing"
       if: (type = push) AND ((branch = dev-1) OR (branch = master))
       jdk: openjdk8
-      script: export USE_REMOTE_PROJECT=true && ./gradlew clean uploadArchives
+      script: ./gradlew clean uploadArchives
 
 
     - stage: documentation

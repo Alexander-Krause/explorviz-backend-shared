@@ -1,6 +1,6 @@
 dependencies {
   	
-  	if(isTravisBuild) {
+  	if(isTravisSnapshotStage) {
 		implementation "net.explorviz:user:${travisBranch}"
 		implementation "net.explorviz:config-injection:${travisBranch}"
 	} else {
@@ -18,7 +18,7 @@ dependencies {
 	implementation group: 'org.glassfish.jersey.containers', name: 'jersey-container-servlet', version:'2.27'
 }
 
-if(isTravisBuild) {
+if(isTravisSnapshotStage) {
 	compileJava.dependsOn project(':user').uploadArchives
 	compileJava.dependsOn project(':config-injection').uploadArchives
 }
