@@ -4,7 +4,12 @@ dependencies {
   	
   	implementation group: 'org.glassfish.jersey.containers', name: 'jersey-container-servlet', version:'2.27'
   	
-  	if(useRemoteSharedProject.toBoolean()) {
+  	def systemEnv = Boolean.valueOf(System.getenv('USE_REMOTE_PROJECT'));
+  	def localEnv = useRemoteSharedProject.toBoolean();
+  	
+  	def shouldUseRemoteProject = systemEnv ? systemEnv : localEnv;
+  	
+  	if(shouldUseRemoteProject) {
   		implementation "net.explorviz:config-injection:${sharedProjectVersion}"
 		implementation "net.explorviz:security:${sharedProjectVersion}"
 		implementation "net.explorviz:exception-handling:${sharedProjectVersion}"

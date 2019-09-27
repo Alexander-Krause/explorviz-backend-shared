@@ -1,6 +1,11 @@
 dependencies {
 
-	if(useRemoteSharedProject.toBoolean()) {
+	def systemEnv = Boolean.valueOf(System.getenv('USE_REMOTE_PROJECT'));
+  	def localEnv = useRemoteSharedProject.toBoolean();
+  	
+  	def shouldUseRemoteProject = systemEnv ? systemEnv : localEnv;
+  	
+  	if(shouldUseRemoteProject) {
 		implementation "net.explorviz:config-injection:${sharedProjectVersion}"
 	} else {
 		// Config subproject

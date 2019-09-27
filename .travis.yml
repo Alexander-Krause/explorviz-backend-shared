@@ -8,14 +8,21 @@ jobs:
   allow_failures:
     - jdk: oraclejdk8
   include:
-    - jdk: openjdk8
-    - jdk: oraclejdk8
+    - stage: test
+      name: "Unit Testing"
+      jdk: openjdk8
+      script: ./gradlew clean test
+
+    - stage: test
+      name: "Unit Testing (oraclejdk8)"
+      jdk: oraclejdk8
+      script: ./gradlew clean test
 
     - stage: snapshot
       name: "Snapshot Publishing"
       if: (type = push) AND ((branch = dev-1) OR (branch = master))
       jdk: openjdk8
-      script: ./gradlew clean uploadArchives
+      script: export USE_REMOTE_PROJECT=true && ./gradlew clean uploadArchives
 
 
     - stage: documentation
