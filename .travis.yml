@@ -9,7 +9,15 @@ jobs:
     - jdk: oraclejdk8
   include:
     - jdk: openjdk8
-    - jdk: oraclejdk8    
+    - jdk: oraclejdk8
+
+    - stage: snapshot
+      name: "Snapshot Publishing"
+      if: (type = push) AND ((branch = dev-1) OR (branch = master))
+      jdk: openjdk8
+      script: ./gradlew clean uploadArchives
+
+
     - stage: documentation
       name: "Publish documentation"
       if: (type = push) AND (branch = master)

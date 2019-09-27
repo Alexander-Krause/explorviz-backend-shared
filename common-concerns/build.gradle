@@ -4,9 +4,15 @@ dependencies {
   	
   	implementation group: 'org.glassfish.jersey.containers', name: 'jersey-container-servlet', version:'2.27'
   	
-	implementation project(':config-injection')	
-	implementation project(':security')
-	implementation project(':exception-handling')
+  	if(useRemoteSharedProject.toBoolean()) {
+  		implementation "net.explorviz:config-injection:${sharedProjectVersion}"
+		implementation "net.explorviz:security:${sharedProjectVersion}"
+		implementation "net.explorviz:exception-handling:${sharedProjectVersion}"
+	} else {
+		implementation project(':config-injection')	
+		implementation project(':security')
+		implementation project(':exception-handling')
+	}
   	
 	// HK2 DI
 	implementation group: 'org.glassfish.jersey.inject', name: 'jersey-hk2', version:'2.27'

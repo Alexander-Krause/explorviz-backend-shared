@@ -3,12 +3,19 @@ def	projectVersion = 'v1.3.0'
 def projectURL= 'https://www.explorviz.net'
 def footerText = '<span>Copyright 2013 - 2019</span> by the <a href="https://www.explorviz.net" target="_blank">ExplorViz project</a>'
 
-allprojects {
+subprojects {
 
-	apply plugin: 'java-library'
+	apply plugin: "java-library"
+	apply plugin: "maven"
+
+	// Force new Dependencies 
+	configurations.all {
+	  resolutionStrategy.cacheChangingModulesFor 0, 'seconds'
+	}
 
     repositories {
-        jcenter() 
+        jcenter()
+        maven { url 'https://oss.sonatype.org/content/repositories/snapshots' }    
     }
     
     dependencies {
@@ -20,18 +27,36 @@ allprojects {
 		
     	testImplementation 'junit:junit:4.12'
 	}
+	
+	// BEGIN Sonatype Snapshot publishing
+	uploadArchives {
+		repositories {
+			mavenDeployer {
+				def user = String.valueOf(System.getenv('SONATYPE_LOGIN'))
+				def pw = String.valueOf(System.getenv('SONATYPE_PW'))
+				
+				repository(url: "https://oss.sonatype.org/content/repositories/snapshots") {
+					authentication(userName: user, password: pw)
+				}
+				pom.version = "master-SNAPSHOT"
+				println project.name
+				pom.artifactId = project.name
+				pom.groupId = "net.explorviz"
+			}
+    	}
+	}
+	// END Sonatype Snapshot publishing
 }
 
 // BEGIN aggregated Javadoc in multiproject Gradle build
 def exportedProjects= [
-		':config-injection', 
-		':exception-handling', 
-		':user',
-		':security',
-		':discovery-common',
-		':landscape-model',
 		':common-concerns',
-		':query'
+		':config-injection',
+		':discovery-common',
+		':exception-handling',
+		':query',
+		':security',
+		':user'
 ]
 
 task alljavadoc(type: Javadoc) {
