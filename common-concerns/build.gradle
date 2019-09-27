@@ -3,8 +3,8 @@ dependencies {
   	implementation group: 'com.github.jasminb', name: 'jsonapi-converter', version:'0.8'
   	
   	implementation group: 'org.glassfish.jersey.containers', name: 'jersey-container-servlet', version:'2.27'
-  	  	  	
-  	if(isTravisSnapshotStage) {
+  	
+  	if(project.hasProperty("isTravisSnapshotStage") && isTravisSnapshotStage) {
   		implementation "net.explorviz:config-injection:${travisBranch}-SNAPSHOT"
 		implementation "net.explorviz:security:${travisBranch}-SNAPSHOT"
 		implementation "net.explorviz:exception-handling:${travisBranch}-SNAPSHOT"
@@ -21,7 +21,7 @@ dependencies {
 	implementation group: 'redis.clients', name: 'jedis',  version: '2.9.0'
 }
 
-if(isTravisSnapshotStage) {
+if(project.hasProperty("isTravisSnapshotStage") && isTravisSnapshotStage) {
 	compileJava.dependsOn project(':config-injection').uploadArchives
 	compileJava.dependsOn project(':security').uploadArchives
 	compileJava.dependsOn project(':exception-handling').uploadArchives
