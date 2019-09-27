@@ -19,7 +19,6 @@ import javax.validation.constraints.NotNull;
 import javax.ws.rs.ForbiddenException;
 import net.explorviz.shared.config.annotations.Config;
 import net.explorviz.shared.security.model.TokenDetails;
-import net.explorviz.shared.security.model.roles.Role;
 
 /**
  * This injectable service is used to extract and parse the details of a JSON web token. If used,
@@ -113,8 +112,8 @@ public class TokenParserService {
    * @return User authorities from the JWT token
    */
   @SuppressWarnings("unchecked")
-  private List<Role> extractAuthoritiesFromClaims(@NotNull final Claims claims) {
-    return (List<Role>) claims.getOrDefault("roles", new ArrayList<Role>());
+  private List<String> extractAuthoritiesFromClaims(@NotNull final Claims claims) {
+    return (List<String>) claims.getOrDefault("roles", new ArrayList<String>());
   }
 
   /**

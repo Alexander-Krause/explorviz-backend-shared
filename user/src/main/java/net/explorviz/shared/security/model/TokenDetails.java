@@ -12,14 +12,14 @@ public final class TokenDetails {
 
   private final String id;
   private final String username;
-  private final List<Role> roles;
+  private final List<String> roles;
   private final String userid;
   private final ZonedDateTime issuedDate;
   private final ZonedDateTime expirationDate;
   private final int refreshCount;
   private final int refreshLimit;
 
-  private TokenDetails(final String id, final String username, final List<Role> roles,
+  private TokenDetails(final String id, final String username, final List<String> roles,
       final ZonedDateTime issuedDate, final ZonedDateTime expirationDate, final int refreshCount,
       final int refreshLimit, final String userid) {
     this.id = id;
@@ -40,7 +40,7 @@ public final class TokenDetails {
     return this.username;
   }
 
-  public List<Role> getRoles() {
+  public List<String> getRoles() {
     return this.roles;
   }
 
@@ -82,7 +82,7 @@ public final class TokenDetails {
     private String id;
     private String userid;
     private String username;
-    private List<Role> roles;
+    private List<String> roles;
     private ZonedDateTime issuedDate;
     private ZonedDateTime expirationDate;
     private int refreshCount;
@@ -98,7 +98,7 @@ public final class TokenDetails {
       return this;
     }
 
-    public Builder withAuthorities(final List<Role> roles) {
+    public Builder withAuthorities(final List<String> roles) {
       this.roles = roles;
       return this;
     }
