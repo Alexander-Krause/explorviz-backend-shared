@@ -43,8 +43,7 @@ subprojects {
 				repository(url: "https://oss.sonatype.org/content/repositories/snapshots") {
 					authentication(userName: user, password: pw)
 				}
-				pom.version = "master-SNAPSHOT"
-				println project.name
+				pom.version = travisBranch
 				pom.artifactId = project.name
 				pom.groupId = "net.explorviz"
 			}
