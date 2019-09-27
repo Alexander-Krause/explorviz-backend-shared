@@ -1,8 +1,9 @@
 dependencies {
 
 	if(useRemoteSharedProject.toBoolean()) {
-		implementation group: 'net.explorviz', name: 'user', version: "${sharedProjectVersion}"
-		implementation group: 'net.explorviz', name: 'config-injection', version: "${sharedProjectVersion}"
+		//implementation group: 'net.explorviz', name: 'user', version: "${sharedProjectVersion}"
+		implementation "net.explorviz:user:${sharedProjectVersion}"
+		implementation "net.explorviz:config-injection:${sharedProjectVersion}"
 	} else {
 		implementation project(':user')	
 		implementation project(':config-injection')

@@ -8,6 +8,11 @@ subprojects {
 	apply plugin: "java-library"
 	apply plugin: "maven"
 
+	// Force new Dependencies 
+	configurations.all {
+	  resolutionStrategy.cacheChangingModulesFor 0, 'seconds'
+	}
+
     repositories {
         jcenter()
         maven { url 'https://oss.sonatype.org/content/repositories/snapshots' }    
