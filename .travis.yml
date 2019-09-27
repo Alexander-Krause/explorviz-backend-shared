@@ -33,3 +33,4 @@ jobs:
 branches:
   only:
   - master
+  - /^v\d+.\d.*/
