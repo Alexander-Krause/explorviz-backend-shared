@@ -5,7 +5,6 @@ import javax.ws.rs.core.SecurityContext;
 import net.explorviz.shared.security.filters.AuthenticationFilter;
 import net.explorviz.shared.security.filters.AuthorizationFilter;
 import net.explorviz.shared.security.model.TokenDetails;
-import net.explorviz.shared.security.model.roles.Role;
 
 /**
  * Custom {@link SecurityContext} that holds security details for the authorization process.
@@ -39,8 +38,8 @@ public class TokenBasedSecurityContext implements SecurityContext {
 
   @Override
   public boolean isUserInRole(final String s) {
-    for (final Role r : this.authenticatedUserDetails.getRoles()) {
-      if (r.getDescriptor().equals(s)) {
+    for (final String r : this.authenticatedUserDetails.getRoles()) {
+      if (r.equals(s)) {
         return true;
       }
     }
