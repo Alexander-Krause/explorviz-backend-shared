@@ -44,14 +44,13 @@ subprojects {
 
 // BEGIN aggregated Javadoc in multiproject Gradle build
 def exportedProjects= [
-		':config-injection', 
-		':exception-handling', 
-		':user',
-		':security',
-		':discovery-common',
-		':landscape-model',
 		':common-concerns',
-		':query'
+		':config-injection',
+		':discovery-common',
+		':exception-handling',
+		':query',
+		':security',
+		':user'
 ]
 
 task alljavadoc(type: Javadoc) {
