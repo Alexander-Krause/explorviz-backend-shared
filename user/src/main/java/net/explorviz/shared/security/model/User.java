@@ -30,9 +30,7 @@ public class User {
   @JsonProperty(access = Access.WRITE_ONLY)
   private String password;
 
-  @Reference
-  @Relationship("roles")
-  private List<Role> roles = new ArrayList<>();
+  private List<String> roles = new ArrayList<>();
 
   private String batchId;
   
@@ -55,7 +53,8 @@ public class User {
    * @param password the password
    * @param roles the roles
    */
-  public User(final String id, final String username, final String password, final List<Role> roles, final String batchId) {
+  public User(final String id, final String username, final String password,
+      final List<String> roles, final String batchId) {
     this.username = username;
     this.id = id;
     this.password = password;
@@ -63,7 +62,8 @@ public class User {
     this.batchId = batchId;
   }
   
-  public User(final String id, final String username, final String password, final List<Role> roles) {
+  public User(final String id, final String username, final String password,
+      final List<String> roles) {
     this(id, username, password, roles, "");
   }
 
@@ -93,11 +93,11 @@ public class User {
     this.password = password;
   }
 
-  public List<Role> getRoles() {
+  public List<String> getRoles() {
     return this.roles;
   }
 
-  public void setRoles(final List<Role> roles) {
+  public void setRoles(final List<String> roles) {
     this.roles = roles;
   }
 

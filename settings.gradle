@@ -1,3 +1,10 @@
 rootProject.name = 'explorviz-backend-shared'
 
-include ':config-injection', ':exception-handling', ':user', ':security', ':discovery-common', ':landscape-model', ':common-concerns'
+include ':common-concerns',
+		':config-injection',
+		':discovery-common',
+		':exception-handling',
+		':query',
+		':security',
+		':user'
+		

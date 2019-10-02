@@ -9,8 +9,7 @@ import java.lang.annotation.Target;
 /**
  * Use the {@code @Config} annotation to inject properties from the explorviz.properties file.
  * Supported types are String, int and boolean.
- *
- * 
+ * <p/>
  * For example:
  *
  * <pre>

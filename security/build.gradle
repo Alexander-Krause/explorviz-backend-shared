@@ -1,9 +1,12 @@
 dependencies {
-
-	// User subproject
-	implementation project(':user')
-	
-	implementation project(':config-injection')
+  	
+  	if(project.hasProperty("isTravisSnapshotStage") && isTravisSnapshotStage) {
+		implementation "net.explorviz:user:${travisBranch}-SNAPSHOT"
+		implementation "net.explorviz:config-injection:${travisBranch}-SNAPSHOT"
+	} else {
+		implementation project(':user')	
+		implementation project(':config-injection')
+	}	
 	
 	// JSON Web Token (JWT)
 	api 'io.jsonwebtoken:jjwt-api:0.10.5'
@@ -13,4 +16,9 @@ dependencies {
 	implementation group: 'org.glassfish.jersey.inject', name: 'jersey-hk2', version:'2.27'
 	
 	implementation group: 'org.glassfish.jersey.containers', name: 'jersey-container-servlet', version:'2.27'
+}
+
+if(project.hasProperty("isTravisSnapshotStage") && isTravisSnapshotStage) {
+	compileJava.dependsOn project(':user').uploadArchives
+	compileJava.dependsOn project(':config-injection').uploadArchives
 }

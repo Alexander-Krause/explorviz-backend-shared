@@ -7,8 +7,10 @@ build
 
 bin
 .classpath
+**/out/
 
 .project
+.idea
 
 .DS_Store
 
@@ -23,3 +25,4 @@ bin
 !*/.settings/org.eclipse.jdt.ui.prefs
 !*/.settings/org.eclipse.jdt.core.prefs
 
+**/.checkstyle
