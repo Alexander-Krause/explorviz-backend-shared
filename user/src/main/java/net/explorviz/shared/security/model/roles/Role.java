@@ -4,6 +4,8 @@ import com.github.jasminb.jsonapi.annotations.Id;
 import com.github.jasminb.jsonapi.annotations.Type;
 import java.util.ArrayList;
 import java.util.List;
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 
 
 @Type("role")
@@ -36,7 +38,7 @@ public class Role {
    * @return {@code true} iff a role with the given name exists
    */
   public static boolean exists(String roleName) {
-    return ROLES.contains(roleName);
+    return ROLES.stream().anyMatch(r -> r.getName().equals(roleName));
   }
 
 
@@ -56,5 +58,21 @@ public class Role {
 
   public String getName() {
     return name;
+  }
+
+  @Override public boolean equals(Object o) {
+    if (this == o)
+      return true;
+
+    if (o == null || getClass() != o.getClass())
+      return false;
+
+    Role role = (Role) o;
+
+    return new EqualsBuilder().append(name, role.name).isEquals();
+  }
+
+  @Override public int hashCode() {
+    return new HashCodeBuilder(17, 37).append(name).toHashCode();
   }
 }
