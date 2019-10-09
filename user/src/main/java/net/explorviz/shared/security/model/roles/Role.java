@@ -1,41 +1,78 @@
 package net.explorviz.shared.security.model.roles;
 
+import com.github.jasminb.jsonapi.annotations.Id;
 import com.github.jasminb.jsonapi.annotations.Type;
 import java.util.ArrayList;
 import java.util.List;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
-import xyz.morphia.annotations.Entity;
-import xyz.morphia.annotations.Id;
 
 
+@Type("role")
 public class Role {
 
   /**
    * User's with this role have elevated access rights and may perform
    * administrative actions.
    */
-  public static final String ADMIN = "admin";
+  public static final String ADMIN_NAME = "admin";
 
+  public static final Role ADMIN = new Role(ADMIN_NAME);
 
   /**
    * Restrictive role for basic users.
    */
-  public static final String USER = "user";
+  public static final String USER_NAME = "user";
 
-  public static List<String> ROLES = new ArrayList<String>(){{
+  public static final Role USER = new Role(USER_NAME);
+
+
+  public static List<Role> ROLES = new ArrayList<Role>(){{
     add(ADMIN);
     add(USER);
   }};
 
   /**
-   * Checks whether the given role exists.
-   * @param role Name of the role to check
-   * @return {@code true} iff the role
+   * Checks whether a role with the given name exists.
+   * @param roleName Name of the role to check
+   * @return {@code true} iff a role with the given name exists
    */
-  public static boolean exists(String role) {
-    return ROLES.contains(role);
+  public static boolean exists(String roleName) {
+    return ROLES.stream().anyMatch(r -> r.getName().equals(roleName));
   }
 
 
+  @Id
+  private String name;
+
+  /**
+   * Creates a new roles.
+   */
+  private Role(String name) {
+    this.name = name;
+  }
+
+  // Jackson
+  public Role(){}
+
+
+  public String getName() {
+    return name;
+  }
+
+  @Override public boolean equals(Object o) {
+    if (this == o)
+      return true;
+
+    if (o == null || getClass() != o.getClass())
+      return false;
+
+    Role role = (Role) o;
+
+    return new EqualsBuilder().append(name, role.name).isEquals();
+  }
+
+  @Override public int hashCode() {
+    return new HashCodeBuilder(17, 37).append(name).toHashCode();
+  }
 }
