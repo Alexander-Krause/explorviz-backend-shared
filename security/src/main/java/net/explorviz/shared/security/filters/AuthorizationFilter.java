@@ -2,6 +2,9 @@ package net.explorviz.shared.security.filters;
 
 import java.io.IOException;
 import java.lang.reflect.Method;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import javax.annotation.Priority;
 import javax.annotation.security.DenyAll;
 import javax.annotation.security.PermitAll;
@@ -14,6 +17,8 @@ import javax.ws.rs.container.ResourceInfo;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.ext.Provider;
 import net.explorviz.shared.security.TokenBasedSecurityContext;
+import net.explorviz.shared.security.model.roles.Role;
+import org.apache.commons.lang3.ArrayUtils;
 
 /**
  * Custom {@link ContainerRequestFilter} that is used for JWT-based authentication and
@@ -101,11 +106,20 @@ public class AuthorizationFilter implements ContainerRequestFilter {
   private void performAuthorization(final String[] rolesAllowed,
       final ContainerRequestContext requestContext) {
 
+
     if (rolesAllowed.length > 0 && !isAuthenticated(requestContext)) {
       throw new ForbiddenException(NOT_AUTHENTICATED_MSG);
     }
 
-    for (final String role : rolesAllowed) {
+    List<String> rolesAllowedList = new ArrayList<>(Arrays.asList(rolesAllowed));
+
+    if (rolesAllowedList.stream().anyMatch(s -> s.contentEquals(Role.ANY))) {
+      rolesAllowedList.add(Role.ADMIN_NAME);
+      rolesAllowedList.add(Role.USER_NAME);
+      rolesAllowedList.remove(Role.ANY);
+    }
+
+    for (final String role : rolesAllowedList) {
       if (requestContext.getSecurityContext().isUserInRole(role)) {
         // authorized => everything is good
         return;
