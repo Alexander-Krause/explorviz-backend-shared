@@ -34,7 +34,14 @@ public class WebApplicationExceptionMapper implements ExceptionMapper<WebApplica
     final String errorString = this.errorObjectHelper.createErrorObjectString(httpStatus,
         "An error occured", exception.getMessage());
 
-    return Response.status(httpStatus).header("Content-Type", "application/json")
-        .entity(errorString).build();
+    Response.ResponseBuilder
+        response = Response.status(httpStatus).header("Content-Type", "application/json")
+        .entity(errorString);
+
+    if (httpStatus == 401) {
+      response.header("WWW-Authenticate", "realm='ExplorViz Secured'");
+    }
+
+    return response.build();
   }
 }
