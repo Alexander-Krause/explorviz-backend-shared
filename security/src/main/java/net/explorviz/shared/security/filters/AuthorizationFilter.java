@@ -20,7 +20,6 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.ext.Provider;
 import net.explorviz.shared.security.TokenBasedSecurityContext;
 import net.explorviz.shared.security.model.roles.Role;
-import org.apache.commons.lang3.ArrayUtils;
 
 /**
  * Custom {@link ContainerRequestFilter} that is used for JWT-based authentication and
