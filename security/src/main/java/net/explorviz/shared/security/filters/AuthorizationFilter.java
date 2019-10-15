@@ -28,6 +28,7 @@ import net.explorviz.shared.security.TokenBasedSecurityContext;
  */
 @Provider
 @Priority(Priorities.AUTHORIZATION)
+@Secure
 public class AuthorizationFilter implements ContainerRequestFilter {
 
   private static final String NO_PERMISSION_MSG =
