@@ -27,10 +27,17 @@ public class Role {
   public static final Role USER = new Role(USER_NAME);
 
 
-  public static List<Role> ROLES = new ArrayList<Role>(){{
+  public final static List<Role> ROLES = new ArrayList<Role>(){{
     add(ADMIN);
     add(USER);
   }};
+
+
+  /**
+   * Alias for arbitrary roles. Used for authorization purposes only, by specifying
+   * {@code @RolesAllowed(Role.ANY)}. This role cannot be assigned to a user.
+   */
+  public final static String ANY = "any";
 
   /**
    * Checks whether a role with the given name exists.
