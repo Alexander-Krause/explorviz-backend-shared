@@ -50,10 +50,15 @@ public class AuthorizationFilter implements ContainerRequestFilter {
 
   @Override
   public void filter(final ContainerRequestContext requestContext) throws IOException { // NOPMD
-    
+
     // Only apply authorization to explorviz resources
     if (!this.resourceInfo.getResourceClass().getCanonicalName().startsWith("net.explorviz")) {
       return;
+    }
+
+    // This filter implies that a user has to be at least authenticated
+    if (!isAuthenticated(requestContext)) {
+      throw new NotAuthorizedException(NOT_AUTHENTICATED_MSG);
     }
 
     final Method method = resourceInfo.getResourceMethod();
@@ -97,24 +102,12 @@ public class AuthorizationFilter implements ContainerRequestFilter {
       // Do nothing
       return;
     }
-
-
-    // Authentication is required for non-annotated methods
-    
-    if (!isAuthenticated(requestContext)) {
-      throw new NotAuthorizedException(NOT_AUTHENTICATED_MSG);
-    }
-    
   }
 
   private void performAuthorization(final String[] rolesAllowed,
       final ContainerRequestContext requestContext) {
 
-
-    if (rolesAllowed.length > 0 && !isAuthenticated(requestContext)) {
-      throw new NotAuthorizedException(NOT_AUTHENTICATED_MSG);
-    }
-
+    
     List<String> rolesAllowedList = new ArrayList<>(Arrays.asList(rolesAllowed));
 
     if (rolesAllowedList.stream().anyMatch(s -> s.contentEquals(Role.ANY))) {
