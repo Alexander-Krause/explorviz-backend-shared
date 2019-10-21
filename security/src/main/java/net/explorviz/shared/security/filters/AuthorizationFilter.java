@@ -2,10 +2,6 @@ package net.explorviz.shared.security.filters;
 
 import java.io.IOException;
 import java.lang.reflect.Method;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.stream.Collectors;
 import javax.annotation.Priority;
 import javax.annotation.security.DenyAll;
 import javax.annotation.security.PermitAll;
@@ -19,7 +15,6 @@ import javax.ws.rs.container.ResourceInfo;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.ext.Provider;
 import net.explorviz.shared.security.TokenBasedSecurityContext;
-import net.explorviz.shared.security.model.roles.Role;
 
 /**
  * Custom {@link ContainerRequestFilter} that is used for JWT-based authentication and
@@ -50,11 +45,6 @@ public class AuthorizationFilter implements ContainerRequestFilter {
 
   @Override
   public void filter(final ContainerRequestContext requestContext) throws IOException { // NOPMD
-
-    // Only apply authorization to explorviz resources
-    if (!this.resourceInfo.getResourceClass().getCanonicalName().startsWith("net.explorviz")) {
-      return;
-    }
 
     // This filter implies that a user has to be at least authenticated
     if (!isAuthenticated(requestContext)) {
