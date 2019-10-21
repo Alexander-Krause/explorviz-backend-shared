@@ -13,11 +13,11 @@ import javax.ws.rs.NameBinding;
  * {@link javax.annotation.security.DenyAll}, and {@link javax.annotation.security.PermitAll} at
  * the same method. If none is given, the request is denied by default. The latter annotations have
  * no effects if {@code @Secure} is not used.
- * <p>
- * If a resource class is annotated, the above explained applies to all contained resource methods.
  *
- * <p>
- * You need to make sure that {@link AuthenticationFilter} and {@link AuthorizationFilter} are
+ * <p>If a resource class is annotated, the above explained applies to all contained resource
+ * methods.
+ *
+ * <p>You need to make sure that {@link AuthenticationFilter} and {@link AuthorizationFilter} are
  * registered in this order at the application.
  */
 @Target({ElementType.TYPE, ElementType.METHOD})

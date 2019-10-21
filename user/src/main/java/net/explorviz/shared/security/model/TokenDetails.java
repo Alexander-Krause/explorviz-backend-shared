@@ -2,7 +2,6 @@ package net.explorviz.shared.security.model;
 
 import java.time.ZonedDateTime;
 import java.util.List;
-import net.explorviz.shared.security.model.roles.Role;
 
 /**
  * Model class for JSON web tokens.
