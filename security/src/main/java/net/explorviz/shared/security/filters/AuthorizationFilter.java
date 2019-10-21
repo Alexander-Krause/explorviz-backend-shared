@@ -101,6 +101,9 @@ public class AuthorizationFilter implements ContainerRequestFilter {
       // Do nothing
       return;
     }
+
+    // No annotation <=> Deny All
+    throw new NotAuthorizedException(NO_PERMISSION_MSG);
   }
 
   private void performAuthorization(final String[] rolesAllowed,
@@ -114,7 +117,7 @@ public class AuthorizationFilter implements ContainerRequestFilter {
       rolesAllowedList.addAll(Role.ROLES.stream().map(Role::getName).collect(Collectors.toList()));
       rolesAllowedList.remove(Role.ANY);
     }
-    
+
     for (final String role : rolesAllowedList) {
       if (requestContext.getSecurityContext().isUserInRole(role)) {
         // authorized => everything is good
