@@ -62,7 +62,6 @@ public class AuthorizationFilter implements ContainerRequestFilter {
     }
 
     final Method method = resourceInfo.getResourceMethod();
-    final Class cls = resourceInfo.getResourceClass();
 
 
     if (method.getName().equals("apply")) {
@@ -112,10 +111,10 @@ public class AuthorizationFilter implements ContainerRequestFilter {
 
     if (rolesAllowedList.stream().anyMatch(s -> s.contentEquals(Role.ANY))) {
       // Add all available roles to list of allowed roles
-      rolesAllowedList.addAll(Role.ROLES.stream().map(Object::toString).collect(Collectors.toList()));
+      rolesAllowedList.addAll(Role.ROLES.stream().map(Role::getName).collect(Collectors.toList()));
       rolesAllowedList.remove(Role.ANY);
     }
-
+    
     for (final String role : rolesAllowedList) {
       if (requestContext.getSecurityContext().isUserInRole(role)) {
         // authorized => everything is good
