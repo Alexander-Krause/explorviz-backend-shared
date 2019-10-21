@@ -24,21 +24,15 @@ public class Role {
    */
   public static final String USER_NAME = "user";
 
-  public static final Role USER = new Role(USER_NAME);
+  public static final  Role USER = new Role(USER_NAME);
 
 
-  public final static List<Role> ROLES = new ArrayList<Role>(){{
-    add(ADMIN);
-    add(USER);
-  }};
+  public static final List<Role> ROLES = new ArrayList<Role>() { {
+      add(ADMIN);
+      add(USER);
+    } };
 
-
-  /**
-   * Alias for arbitrary roles. Used for authorization purposes only, by specifying
-   * {@code @RolesAllowed(Role.ANY)}. This role cannot be assigned to a user.
-   */
-  public final static String ANY = "any";
-
+  
   /**
    * Checks whether a role with the given name exists.
    * @param roleName Name of the role to check
@@ -47,7 +41,6 @@ public class Role {
   public static boolean exists(String roleName) {
     return ROLES.stream().anyMatch(r -> r.getName().equals(roleName));
   }
-
 
   @Id
   private String name;
@@ -60,7 +53,10 @@ public class Role {
   }
 
   // Jackson
-  public Role(){}
+  public Role(){
+
+  }
+
 
 
   public String getName() {
@@ -68,18 +64,23 @@ public class Role {
   }
 
   @Override public boolean equals(Object o) {
-    if (this == o)
+    if (this == o) {
       return true;
+    }
 
-    if (o == null || getClass() != o.getClass())
+    if (o == null || getClass() != o.getClass()) {
       return false;
+    }
 
     Role role = (Role) o;
 
     return new EqualsBuilder().append(name, role.name).isEquals();
   }
 
-  @Override public int hashCode() {
-    return new HashCodeBuilder(17, 37).append(name).toHashCode();
+  @Override
+  public int hashCode() {
+    final int initialOddNum = 17;
+    final int mutliplier = 37;
+    return new HashCodeBuilder(initialOddNum, mutliplier).append(name).toHashCode();
   }
 }

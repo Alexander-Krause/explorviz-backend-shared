@@ -27,6 +27,7 @@ import net.explorviz.shared.security.model.TokenDetails;
  */
 @Provider
 @Priority(Priorities.AUTHENTICATION)
+@Secure
 public class AuthenticationFilter implements ContainerRequestFilter {
 
   // Credit: https://github.com/cassiomolin/jersey-jwt

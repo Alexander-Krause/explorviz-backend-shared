@@ -30,7 +30,8 @@ public class ClientService {
   private static final String MEDIA_TYPE = "application/vnd.api+json";
 
   private static final String LOGGER_MESSAGE =
-      "Connection to {} failed, probably offline or wrong IP. Check IP in WEB-INF/classes/explorviz.properties. Error Message: {}";
+      "Connection to {} failed, probably offline or wrong IP. "
+          + "Check IP in WEB-INF/classes/explorviz.properties. Error Message: {}";
 
   private final ClientBuilder clientBuilder = ClientBuilder.newBuilder();
 

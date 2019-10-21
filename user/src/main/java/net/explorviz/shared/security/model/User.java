@@ -2,16 +2,13 @@ package net.explorviz.shared.security.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonProperty.Access;
-import com.github.jasminb.jsonapi.annotations.Relationship;
 import com.github.jasminb.jsonapi.annotations.Type;
 import java.util.ArrayList;
 import java.util.List;
-import net.explorviz.shared.security.model.roles.Role;
 import xyz.morphia.annotations.Entity;
 import xyz.morphia.annotations.Id;
 import xyz.morphia.annotations.IndexOptions;
 import xyz.morphia.annotations.Indexed;
-import xyz.morphia.annotations.Reference;
 
 /**
  * Model class (container) for the pair of username and password.

@@ -2,10 +2,6 @@ package net.explorviz.shared.security.filters;
 
 import java.io.IOException;
 import java.lang.reflect.Method;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.stream.Collectors;
 import javax.annotation.Priority;
 import javax.annotation.security.DenyAll;
 import javax.annotation.security.PermitAll;
@@ -19,7 +15,6 @@ import javax.ws.rs.container.ResourceInfo;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.ext.Provider;
 import net.explorviz.shared.security.TokenBasedSecurityContext;
-import net.explorviz.shared.security.model.roles.Role;
 
 /**
  * Custom {@link ContainerRequestFilter} that is used for JWT-based authentication and
@@ -34,6 +29,7 @@ import net.explorviz.shared.security.model.roles.Role;
  */
 @Provider
 @Priority(Priorities.AUTHORIZATION)
+@Secure
 public class AuthorizationFilter implements ContainerRequestFilter {
 
   private static final String NO_PERMISSION_MSG =
@@ -49,14 +45,13 @@ public class AuthorizationFilter implements ContainerRequestFilter {
 
   @Override
   public void filter(final ContainerRequestContext requestContext) throws IOException { // NOPMD
-    
-    // Only apply authorization to explorviz resources
-    if (!this.resourceInfo.getResourceClass().getCanonicalName().startsWith("net.explorviz")) {
-      return;
+
+    // This filter implies that a user has to be at least authenticated
+    if (!isAuthenticated(requestContext)) {
+      throw new NotAuthorizedException(NOT_AUTHENTICATED_MSG);
     }
 
     final Method method = resourceInfo.getResourceMethod();
-    final Class cls = resourceInfo.getResourceClass();
 
 
     if (method.getName().equals("apply")) {
@@ -97,32 +92,15 @@ public class AuthorizationFilter implements ContainerRequestFilter {
       return;
     }
 
-
-    // Authentication is required for non-annotated methods
-    
-    if (!isAuthenticated(requestContext)) {
-      throw new NotAuthorizedException(NOT_AUTHENTICATED_MSG);
-    }
-    
+    // No annotation <=> Deny All
+    throw new NotAuthorizedException(NO_PERMISSION_MSG);
   }
 
   private void performAuthorization(final String[] rolesAllowed,
       final ContainerRequestContext requestContext) {
 
 
-    if (rolesAllowed.length > 0 && !isAuthenticated(requestContext)) {
-      throw new NotAuthorizedException(NOT_AUTHENTICATED_MSG);
-    }
-
-    List<String> rolesAllowedList = new ArrayList<>(Arrays.asList(rolesAllowed));
-
-    if (rolesAllowedList.stream().anyMatch(s -> s.contentEquals(Role.ANY))) {
-      // Add all available roles to list of allowed roles
-      rolesAllowedList.addAll(Role.ROLES.stream().map(Object::toString).collect(Collectors.toList()));
-      rolesAllowedList.remove(Role.ANY);
-    }
-
-    for (final String role : rolesAllowedList) {
+    for (final String role : rolesAllowed) {
       if (requestContext.getSecurityContext().isUserInRole(role)) {
         // authorized => everything is good
         return;
