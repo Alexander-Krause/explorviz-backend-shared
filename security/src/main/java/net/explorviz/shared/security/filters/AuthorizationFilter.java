@@ -109,16 +109,8 @@ public class AuthorizationFilter implements ContainerRequestFilter {
   private void performAuthorization(final String[] rolesAllowed,
       final ContainerRequestContext requestContext) {
 
-    
-    List<String> rolesAllowedList = new ArrayList<>(Arrays.asList(rolesAllowed));
 
-    if (rolesAllowedList.stream().anyMatch(s -> s.contentEquals(Role.ANY))) {
-      // Add all available roles to list of allowed roles
-      rolesAllowedList.addAll(Role.ROLES.stream().map(Role::getName).collect(Collectors.toList()));
-      rolesAllowedList.remove(Role.ANY);
-    }
-
-    for (final String role : rolesAllowedList) {
+    for (final String role : rolesAllowed) {
       if (requestContext.getSecurityContext().isUserInRole(role)) {
         // authorized => everything is good
         return;

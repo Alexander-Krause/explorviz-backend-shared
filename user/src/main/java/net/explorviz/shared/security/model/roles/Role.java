@@ -32,13 +32,7 @@ public class Role {
     add(USER);
   }};
 
-
-  /**
-   * Alias for arbitrary roles. Used for authorization purposes only, by specifying
-   * {@code @RolesAllowed(Role.ANY)}. This role cannot be assigned to a user.
-   */
-  public final static String ANY = "any";
-
+  
   /**
    * Checks whether a role with the given name exists.
    * @param roleName Name of the role to check
