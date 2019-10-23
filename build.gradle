@@ -57,8 +57,7 @@ def exportedProjects= [
 		':discovery-common',
 		':exception-handling',
 		':query',
-		':security',
-		':user'
+		':security'
 ]
 
 task alljavadoc(type: Javadoc) {
