@@ -84,6 +84,7 @@ public class AuthorizationFilter implements ContainerRequestFilter {
     rolesAllowed = resourceInfo.getResourceClass().getAnnotation(RolesAllowed.class);
     if (rolesAllowed != null) {
       performAuthorization(rolesAllowed.value(), requestContext);
+      return;
     }
 
     // @PermitAll on the class, lowest precedence
