@@ -18,5 +18,3 @@ net.explorviz.shared.exceptions.mapper
 net.explorviz.shared.querying
 net.explorviz.shared.security
 net.explorviz.shared.security.filters
-net.explorviz.shared.security.model
-net.explorviz.shared.security.model.roles
