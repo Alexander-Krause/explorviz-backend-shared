@@ -3,9 +3,6 @@ dist: trusty
 
 language: java
 
-services:
-  - redis-server
-
 jobs:
   fast_finish: true
   allow_failures:
